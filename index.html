@@ -225,6 +225,39 @@
       cursor: pointer;
     }
 
+    .captcha-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.55rem;
+      align-items: end;
+    }
+
+    .captcha-question {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      color: #f1d487;
+      background: rgba(10, 14, 23, 0.8);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .captcha-refresh {
+      min-height: 48px;
+      padding: 0 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .captcha-refresh:hover { background: rgba(255, 255, 255, 0.12); }
+
     .classy-input {
       width: 100%;
       background: rgba(10, 14, 23, 0.8);
@@ -1324,6 +1357,54 @@
 
     .home-brand:hover { color: #fff; text-decoration: underline; }
 
+    .home-brand { cursor: pointer; }
+
+    .rickroll-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 230;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(3, 7, 13, 0.88);
+      backdrop-filter: blur(10px);
+    }
+
+    .rickroll-modal.hidden { display: none; }
+
+    .rickroll-dialog {
+      position: relative;
+      width: min(900px, 100%);
+      padding: 0.75rem;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      background: #0b111b;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+    }
+
+    .rickroll-video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 10px;
+    }
+
+    .rickroll-close {
+      position: absolute;
+      top: -0.7rem;
+      right: -0.7rem;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: #fff;
+      background: #172337;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
     .audio-help {
       position: fixed;
       inset: auto 1rem 1rem auto;
@@ -1387,6 +1468,13 @@
   <audio id="remoteAudioStream" autoplay playsinline></audio>
   <button id="audioHelp" class="audio-help" type="button">Tap to enable call audio</button>
 
+  <div id="rickrollModal" class="rickroll-modal hidden" role="dialog" aria-modal="true" aria-label="Never Gonna Give You Up video">
+    <div class="rickroll-dialog">
+      <button id="btnCloseRickroll" class="rickroll-close" type="button" aria-label="Close video">✕</button>
+      <iframe class="rickroll-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" title="Rick Astley - Never Gonna Give You Up" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
   <details id="musicPlayer" class="music-player">
     <summary></summary>
     <div class="music-controls">
@@ -1443,12 +1531,26 @@
           <input type="text" id="usernameInput" class="classy-input" placeholder="Your name" maxlength="24">
         </div>
 
+        <div>
+          <label class="input-label" for="roomNameInput">Room name</label>
+          <input type="text" id="roomNameInput" class="classy-input" placeholder="Enter the room name" maxlength="48" autocomplete="off">
+        </div>
+
+        <div>
+          <label class="input-label" for="captchaInput">Verification</label>
+          <div class="captcha-row">
+            <div id="captchaQuestion" class="captcha-question" aria-live="polite"></div>
+            <button id="btnRefreshCaptcha" class="captcha-refresh" type="button" title="New verification question" aria-label="New verification question">↻</button>
+          </div>
+          <input type="number" id="captchaInput" class="classy-input" placeholder="Answer" inputmode="numeric" min="0" required>
+        </div>
+
         <button id="btnEnterLounge" class="btn-classy-primary">
           <span>➤</span> Enter chat
         </button>
 
         <p class="smart-notice">
-          Share the room link with your friends so they can join the same chat.
+          This website is for educational purposes only.
         </p>
       </div>
     </div>
@@ -1539,7 +1641,7 @@
       </div>
 
       <div class="header-actions">
-        <span class="home-brand" title="Hostel Panchayat">Hostel Panchayat</span>
+        <span id="homeBrand" class="home-brand" title="Play Never Gonna Give You Up" role="button" tabindex="0" aria-label="Play Never Gonna Give You Up">Hostel Panchayat</span>
         <span class="header-credit">Made by Raghav</span>
         <button id="btnBackRoom" class="header-icon-btn" title="Back to start" aria-label="Back to start">←</button>
         <button id="btnNewChat" class="header-icon-btn" title="New chat" aria-label="New chat">＋</button>
@@ -1633,6 +1735,10 @@
     const remoteAudioStream = document.getElementById('remoteAudioStream');
     const loginModal = document.getElementById('loginModal');
     const usernameInput = document.getElementById('usernameInput');
+    const roomNameInput = document.getElementById('roomNameInput');
+    const captchaQuestion = document.getElementById('captchaQuestion');
+    const captchaInput = document.getElementById('captchaInput');
+    const btnRefreshCaptcha = document.getElementById('btnRefreshCaptcha');
     const btnEnterLounge = document.getElementById('btnEnterLounge');
     const displayMeetCode = document.getElementById('displayMeetCode');
     const qrMeetCodeText = document.getElementById('qrMeetCodeText');
@@ -1655,6 +1761,16 @@
 
     function safeName(value) {
       return String(value || '').trim() || fallbackName;
+    }
+
+    let captchaAnswer = 0;
+
+    function refreshCaptcha() {
+      const firstNumber = Math.floor(Math.random() * 8) + 2;
+      const secondNumber = Math.floor(Math.random() * 8) + 1;
+      captchaAnswer = firstNumber + secondNumber;
+      captchaQuestion.textContent = `${firstNumber} + ${secondNumber} = ?`;
+      captchaInput.value = '';
     }
 
     const permModal = document.getElementById('permModal');
@@ -1687,6 +1803,9 @@
     const btnExitRoom = document.getElementById('btnExitRoom');
     const btnBackRoom = document.getElementById('btnBackRoom');
     const btnNewChat = document.getElementById('btnNewChat');
+    const homeBrand = document.getElementById('homeBrand');
+    const rickrollModal = document.getElementById('rickrollModal');
+    const btnCloseRickroll = document.getElementById('btnCloseRickroll');
     const musicSearch = document.getElementById('musicSearch');
     const trackResults = document.getElementById('trackResults');
     const audioPlayer = document.getElementById('audioPlayer');
@@ -1878,6 +1997,8 @@
 
 
     usernameInput.value = safeName(myUsername);
+    roomNameInput.value = localStorage.getItem('hosteller_room_name') || '';
+    refreshCaptcha();
     usernameInput.addEventListener('focus', () => {
       if (usernameInput.value === fallbackName) usernameInput.value = '';
     }, { once: true });
@@ -2029,9 +2150,8 @@
       }, { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 });
     });
 
-    function createRoomId() {
-      const chars = 'ABCDEFGHJKLMNPRSTUVWXYZ0123456789';
-      return Array.from({ length: 17 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    function createRoomId(roomName) {
+      return normalizeRoomName(roomName);
     }
 
     document.getElementById('searchMusic').addEventListener('click', async () => {
@@ -2129,7 +2249,7 @@
         .replace(/[^a-z0-9-]+/g, '-')
         .replace(/^-+|-+$/g, '')
         .slice(0, 48);
-      return normalized || createRoomId();
+      return normalized;
     }
 
     function getRoomFromHash() {
@@ -2148,13 +2268,12 @@
 
       btnEnterLounge.textContent = 'Entering Room...';
 
-      peer = new Peer(hostTargetId, peerConfig);
-
       if (mode === 'join') {
-        peer.destroy();
         joinAsGuest(hostTargetId);
         return;
       }
+
+      peer = new Peer(hostTargetId, peerConfig);
 
       peer.on('open', () => {
         onRoomReady(true);
@@ -2682,16 +2801,54 @@
 
     btnVoiceCall.addEventListener('click', () => startCall(false));
     btnVideoCall.addEventListener('click', () => startCall(true));
+    btnRefreshCaptcha.addEventListener('click', refreshCaptcha);
+
+    function closeRickroll() {
+      rickrollModal.classList.add('hidden');
+      rickrollModal.querySelector('iframe').src = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
+    }
+
+    function openRickroll() {
+      rickrollModal.classList.remove('hidden');
+    }
+
+    homeBrand.addEventListener('click', openRickroll);
+    homeBrand.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openRickroll();
+      }
+    });
+    btnCloseRickroll.addEventListener('click', closeRickroll);
+    rickrollModal.addEventListener('click', (event) => {
+      if (event.target === rickrollModal) closeRickroll();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !rickrollModal.classList.contains('hidden')) closeRickroll();
+    });
 
     btnEnterLounge.addEventListener('click', () => {
       myUsername = usernameInput.value.trim() || 'Your name';
+      const roomName = roomNameInput.value.trim();
+      const sharedRoom = getRoomFromHash();
+      const room = sharedRoom || createRoomId(roomName);
+      if (Number(captchaInput.value) !== captchaAnswer) {
+        captchaInput.focus();
+        notify('Please solve the verification question.');
+        refreshCaptcha();
+        return;
+      }
+      if (!room) {
+        roomNameInput.focus();
+        notify('Enter a room name first.');
+        return;
+      }
       monitorMode = myUsername.toLowerCase() === 'jaimatajihariom';
       activeUsersPanel.classList.toggle('visible', monitorMode);
       renderActiveUsers();
       localStorage.setItem('hosteller_user', myUsername);
+      if (!sharedRoom) localStorage.setItem('hosteller_room_name', roomName);
 
-      const sharedRoom = getRoomFromHash();
-      const room = sharedRoom || createRoomId();
       const mode = sharedRoom ? 'join' : 'create';
       window.location.hash = `room=${encodeURIComponent(room)}`;
       enterSmartRoom(room, mode);
