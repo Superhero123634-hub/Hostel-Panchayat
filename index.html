@@ -1751,6 +1751,7 @@
     });
 
     const songsFolder = './songs/';
+    const githubSongsApi = 'https://api.github.com/repos/Superhero123634-hub/Hostel-Panchayat/contents/songs';
     const fallbackSongs = [{
       file: 'jab-zid-pe-aa-gayi-parvati--hanuman-ansh--sadhu-tiwari--shobhinaw-satyaa.mp3',
       label: 'Jab Zid Pe Aa Gayi Parvati',
@@ -1795,8 +1796,35 @@
       });
     }
 
+    async function loadGitHubSongs() {
+      const response = await fetch(githubSongsApi, {
+        headers: { Accept: 'application/vnd.github+json' }
+      });
+      if (!response.ok) return [];
+
+      const entries = await response.json();
+      return entries
+        .filter((entry) => entry.type === 'file' && /\.(mp3|wav|m4a|aac|ogg)$/i.test(entry.name))
+        .map((entry) => ({
+          file: entry.name,
+          label: formatSongName(entry.name),
+          url: entry.download_url || `${songsFolder}${encodeURIComponent(entry.name)}`
+        }));
+    }
+
     async function loadLocalSongs() {
       try {
+        const githubSongs = await loadGitHubSongs();
+        if (githubSongs.length) {
+          localSongs = githubSongs;
+          const term = musicSearch.value.trim().toLowerCase();
+          const filtered = term
+            ? localSongs.filter((song) => `${song.label} ${song.file}`.toLowerCase().includes(term))
+            : localSongs;
+          renderLocalSongs(filtered);
+          return;
+        }
+
         const response = await fetch(songsFolder);
         if (!response.ok) {
           localSongs = fallbackSongs;
