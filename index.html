@@ -1347,64 +1347,6 @@
       white-space: nowrap;
     }
 
-    .home-brand {
-      color: #a9e5ff;
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .home-brand:hover { color: #fff; text-decoration: underline; }
-
-    .home-brand { cursor: pointer; }
-
-    .rickroll-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 230;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      background: rgba(3, 7, 13, 0.88);
-      backdrop-filter: blur(10px);
-    }
-
-    .rickroll-modal.hidden { display: none; }
-
-    .rickroll-dialog {
-      position: relative;
-      width: min(900px, 100%);
-      padding: 0.75rem;
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      background: #0b111b;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
-    }
-
-    .rickroll-video {
-      display: block;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border: 0;
-      border-radius: 10px;
-    }
-
-    .rickroll-close {
-      position: absolute;
-      top: -0.7rem;
-      right: -0.7rem;
-      width: 34px;
-      height: 34px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      color: #fff;
-      background: #172337;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
     .audio-help {
       position: fixed;
       inset: auto 1rem 1rem auto;
@@ -1467,13 +1409,6 @@
   <!-- Audio Element for WebRTC remote sound delivery -->
   <audio id="remoteAudioStream" autoplay playsinline></audio>
   <button id="audioHelp" class="audio-help" type="button">Tap to enable call audio</button>
-
-  <div id="rickrollModal" class="rickroll-modal hidden" role="dialog" aria-modal="true" aria-label="Never Gonna Give You Up video">
-    <div class="rickroll-dialog">
-      <button id="btnCloseRickroll" class="rickroll-close" type="button" aria-label="Close video">✕</button>
-      <iframe class="rickroll-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" title="Rick Astley - Never Gonna Give You Up" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
 
   <details id="musicPlayer" class="music-player">
     <summary></summary>
@@ -1641,7 +1576,7 @@
       </div>
 
       <div class="header-actions">
-        <span id="homeBrand" class="home-brand" title="Play Never Gonna Give You Up" role="button" tabindex="0" aria-label="Play Never Gonna Give You Up">Hostel Panchayat</span>
+        <span class="home-brand">Hostel Panchayat</span>
         <span class="header-credit">Made by Raghav</span>
         <button id="btnBackRoom" class="header-icon-btn" title="Back to start" aria-label="Back to start">←</button>
         <button id="btnNewChat" class="header-icon-btn" title="New chat" aria-label="New chat">＋</button>
@@ -1729,7 +1664,13 @@
     }
     let isTypingTimeout = null;
     let pendingCallAction = null;
-    let recentRooms = JSON.parse(localStorage.getItem('hosteller_recent_rooms') || '[]');
+    let recentRooms = [];
+    try {
+      const storedRooms = JSON.parse(localStorage.getItem('hosteller_recent_rooms') || '[]');
+      recentRooms = Array.isArray(storedRooms) ? storedRooms : [];
+    } catch (error) {
+      localStorage.removeItem('hosteller_recent_rooms');
+    }
     const fallbackName = 'Your name';
 
     const remoteAudioStream = document.getElementById('remoteAudioStream');
@@ -1803,9 +1744,6 @@
     const btnExitRoom = document.getElementById('btnExitRoom');
     const btnBackRoom = document.getElementById('btnBackRoom');
     const btnNewChat = document.getElementById('btnNewChat');
-    const homeBrand = document.getElementById('homeBrand');
-    const rickrollModal = document.getElementById('rickrollModal');
-    const btnCloseRickroll = document.getElementById('btnCloseRickroll');
     const musicSearch = document.getElementById('musicSearch');
     const trackResults = document.getElementById('trackResults');
     const audioPlayer = document.getElementById('audioPlayer');
@@ -2017,6 +1955,25 @@
       return String(value).replace(/[&<>'"]/g, (character) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
       }[character]));
+    }
+
+    function safeAttachmentUrl(value, allowedType = '') {
+      const url = String(value || '');
+      const dataPrefix = allowedType ? `data:${allowedType}/` : 'data:';
+      if (url.startsWith(dataPrefix) || url.startsWith('blob:')) return url;
+      if (/^https:\/\//i.test(url)) return url;
+      return '';
+    }
+
+    function appendBubbleMeta(meta, time, isOutgoing) {
+      const timeElement = document.createElement('span');
+      timeElement.textContent = time;
+      meta.appendChild(timeElement);
+      if (isOutgoing) {
+        const statusElement = document.createElement('span');
+        statusElement.textContent = '• Delivered';
+        meta.appendChild(statusElement);
+      }
     }
 
     function formatRecentTime(timestamp) {
@@ -2378,6 +2335,7 @@
       });
 
       connection.on('data', (payload) => {
+        if (!payload || typeof payload !== 'object') return;
         if (payload.type === 'handshake') {
           const memberName = safeName(payload.name);
           activeMembers.set(connection.peer, memberName);
@@ -2465,7 +2423,7 @@
       bubble.textContent = text;
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
+      appendBubbleMeta(meta, time, isOutgoing);
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2483,14 +2441,14 @@
       bubble.className = 'bubble';
       bubble.style.padding = '0.4rem';
       const image = document.createElement('img');
-      image.src = dataUrl;
+      image.src = safeAttachmentUrl(dataUrl, 'image');
       image.className = 'bubble-image';
       image.alt = 'Shared photo';
       image.addEventListener('click', () => window.open(dataUrl, '_blank', 'noopener'));
       bubble.appendChild(image);
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
+      appendBubbleMeta(meta, time, isOutgoing);
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2505,10 +2463,11 @@
       row.className = `chat-bubble-row ${isOutgoing ? 'outgoing' : 'incoming'}`;
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      const media = document.createElement(mime.startsWith('video/') ? 'video' : 'audio');
+      const safeMime = typeof mime === 'string' ? mime : '';
+      const media = document.createElement(safeMime.startsWith('video/') ? 'video' : 'audio');
       media.className = 'shared-media';
       media.controls = true;
-      media.src = dataUrl;
+      media.src = safeAttachmentUrl(dataUrl, safeMime.split('/')[0]);
       media.setAttribute('aria-label', fileName);
       bubble.appendChild(media);
       const name = document.createElement('div');
@@ -2517,7 +2476,7 @@
       bubble.appendChild(name);
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
+      appendBubbleMeta(meta, time, isOutgoing);
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2534,7 +2493,7 @@
       bubble.className = 'bubble';
       const link = document.createElement('a');
       link.className = 'shared-file';
-      link.href = dataUrl;
+      link.href = safeAttachmentUrl(dataUrl);
       link.download = fileName;
       link.target = '_blank';
       link.rel = 'noopener';
@@ -2546,7 +2505,7 @@
       bubble.appendChild(link);
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
+      appendBubbleMeta(meta, time, isOutgoing);
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2802,30 +2761,6 @@
     btnVoiceCall.addEventListener('click', () => startCall(false));
     btnVideoCall.addEventListener('click', () => startCall(true));
     btnRefreshCaptcha.addEventListener('click', refreshCaptcha);
-
-    function closeRickroll() {
-      rickrollModal.classList.add('hidden');
-      rickrollModal.querySelector('iframe').src = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
-    }
-
-    function openRickroll() {
-      rickrollModal.classList.remove('hidden');
-    }
-
-    homeBrand.addEventListener('click', openRickroll);
-    homeBrand.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openRickroll();
-      }
-    });
-    btnCloseRickroll.addEventListener('click', closeRickroll);
-    rickrollModal.addEventListener('click', (event) => {
-      if (event.target === rickrollModal) closeRickroll();
-    });
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !rickrollModal.classList.contains('hidden')) closeRickroll();
-    });
 
     btnEnterLounge.addEventListener('click', () => {
       myUsername = usernameInput.value.trim() || 'Your name';
