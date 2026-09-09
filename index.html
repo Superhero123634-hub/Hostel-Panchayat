@@ -1844,11 +1844,19 @@
       trackResults.querySelectorAll('[data-song]').forEach((button) => {
         button.addEventListener('click', () => {
           const src = button.dataset.song;
+          const song = localSongs.find((item) => item.url === src);
           audioPlayer.pause();
           audioPlayer.src = src;
           audioPlayer.load();
           audioPlayer.oncanplay = () => audioPlayer.play().catch(() => notify('Tap the play button to start the song.'));
-          audioPlayer.onerror = () => notify('This song file could not be loaded. Check the file name or format.');
+          audioPlayer.onerror = () => {
+            if (song && song.fallbackUrl && audioPlayer.src !== song.fallbackUrl) {
+              audioPlayer.src = song.fallbackUrl;
+              audioPlayer.load();
+              return;
+            }
+            notify('This song file could not be loaded. Check the file name or format.');
+          };
         });
       });
     }
@@ -1865,7 +1873,8 @@
         .map((entry) => ({
           file: entry.name,
           label: formatSongName(entry.name),
-          url: entry.download_url || `${songsFolder}${encodeURIComponent(entry.name)}`
+          url: `${songsFolder}${encodeURIComponent(entry.name)}`,
+          fallbackUrl: entry.download_url
         }));
     }
 
