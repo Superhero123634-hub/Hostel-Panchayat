@@ -3,11 +3,15 @@
 <head>
   <meta charset="utf-8">
   <title>Songs</title>
+  <style>
+    .password-toggle { width: 38px; }
+  </style>
 </head>
 <body>
   <div id="passwordGate">
     <label for="musicPassword">Enter password to listen</label>
     <input id="musicPassword" type="password" placeholder="Password" autocomplete="off">
+    <button id="togglePassword" class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password">&#128065;</button>
     <button id="unlockMusic" type="button">Unlock</button>
     <p>Contact Raghav at 9981940670 to get the password.</p>
     <button id="forgotPassword" type="button">Forgot password?</button>
@@ -24,6 +28,7 @@
   </div>
   <script>
     const passwordInput = document.getElementById('musicPassword');
+    const togglePassword = document.getElementById('togglePassword');
     const unlockButton = document.getElementById('unlockMusic');
     const status = document.getElementById('status');
     const songLink = document.getElementById('songLink');
@@ -46,7 +51,7 @@
       failedAttempts = 0;
       localStorage.removeItem(MUSIC_LOCK_KEY);
       localStorage.removeItem(MUSIC_LOCK_UNTIL_KEY);
-      [passwordInput, unlockButton, forgotPassword, recoveryAnswer, recover].forEach((element) => {
+      [passwordInput, togglePassword, unlockButton, forgotPassword, recoveryAnswer, recover].forEach((element) => {
         element.disabled = false;
       });
       status.textContent = 'You can try again.';
@@ -55,7 +60,7 @@
     function applyMusicLock() {
       musicLocked = true;
       status.textContent = 'Songs locked for 5 minutes after 3 incorrect attempts.';
-      [passwordInput, unlockButton, forgotPassword, recoveryAnswer, recover].forEach((element) => {
+      [passwordInput, togglePassword, unlockButton, forgotPassword, recoveryAnswer, recover].forEach((element) => {
         element.disabled = true;
       });
       window.setTimeout(clearMusicLock, Math.max(0, lockedUntil - Date.now()));
@@ -87,6 +92,13 @@
     }
 
     unlockButton.addEventListener('click', unlockSong);
+    togglePassword.addEventListener('click', () => {
+      const isVisible = passwordInput.type === 'text';
+      passwordInput.type = isVisible ? 'password' : 'text';
+      togglePassword.setAttribute('aria-pressed', String(!isVisible));
+      togglePassword.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+      togglePassword.title = isVisible ? 'Show password' : 'Hide password';
+    });
     passwordInput.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') unlockSong();
     });

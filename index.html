@@ -1164,6 +1164,8 @@
     .music-gate-row { display: flex; gap: 0.4rem; }
     .music-password { min-width: 0; flex: 1; padding: 0.55rem 0.65rem; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #fff; outline: none; }
     .music-password:focus { border-color: #40baff; box-shadow: 0 0 0 2px rgba(64, 186, 255, 0.15); }
+    .password-toggle { width: 38px; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #d9f3ff; cursor: pointer; }
+    .password-toggle:hover { background: rgba(64, 186, 255, 0.2); }
     .music-gate-status { min-height: 0.8rem; color: #ffb4b0; font-size: 0.62rem; }
     .music-gate.hidden { display: none; }
     .music-recovery-toggle { width: max-content; padding: 0; border: 0; background: none; color: #8bddff; font-size: 0.62rem; cursor: pointer; }
@@ -1439,6 +1441,7 @@
       <label class="music-gate-label" for="musicPassword">Enter password to listen</label>
       <div class="music-gate-row">
         <input id="musicPassword" class="music-password" type="password" placeholder="Password" autocomplete="off">
+        <button id="toggleMusicPassword" class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password">&#128065;</button>
         <button id="unlockMusic" class="music-load" type="button">Unlock</button>
       </div>
       <span class="music-gate-label">Contact Raghav at 9981940670 to get the password.</span>
@@ -1793,6 +1796,7 @@
     const musicPlayer = document.getElementById('musicPlayer');
     const musicSummary = musicPlayer.querySelector('summary');
     const musicPassword = document.getElementById('musicPassword');
+    const toggleMusicPassword = document.getElementById('toggleMusicPassword');
     const unlockMusic = document.getElementById('unlockMusic');
     const musicGateStatus = document.getElementById('musicGateStatus');
     const musicGate = document.getElementById('musicGate');
@@ -1816,7 +1820,7 @@
       musicFailedAttempts = 0;
       localStorage.removeItem(MUSIC_LOCK_KEY);
       localStorage.removeItem(MUSIC_LOCK_UNTIL_KEY);
-      [musicPassword, unlockMusic, forgotMusicPassword, musicRecoveryAnswer, recoverMusic].forEach((element) => {
+      [musicPassword, toggleMusicPassword, unlockMusic, forgotMusicPassword, musicRecoveryAnswer, recoverMusic].forEach((element) => {
         element.disabled = false;
       });
       musicGateStatus.textContent = 'You can try again.';
@@ -1880,6 +1884,13 @@
     }
 
     unlockMusic.addEventListener('click', unlockMusicPlayer);
+    toggleMusicPassword.addEventListener('click', () => {
+      const isVisible = musicPassword.type === 'text';
+      musicPassword.type = isVisible ? 'password' : 'text';
+      toggleMusicPassword.setAttribute('aria-pressed', String(!isVisible));
+      toggleMusicPassword.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+      toggleMusicPassword.title = isVisible ? 'Show password' : 'Hide password';
+    });
     musicPassword.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') unlockMusicPlayer();
     });
