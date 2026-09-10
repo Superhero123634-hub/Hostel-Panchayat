@@ -5,6 +5,118 @@
   <title>Songs</title>
 </head>
 <body>
-  <a href="jab-zid-pe-aa-gayi-parvati--hanuman-ansh--sadhu-tiwari--shobhinaw-satyaa.mp3">Jab Zid Pe Aa Gayi Parvati</a>
+  <div id="passwordGate">
+    <label for="musicPassword">Enter password to listen</label>
+    <input id="musicPassword" type="password" placeholder="Password" autocomplete="off">
+    <button id="unlockMusic" type="button">Unlock</button>
+    <p>Contact Raghav at 9981940670 to get the password.</p>
+    <button id="forgotPassword" type="button">Forgot password?</button>
+    <div id="recovery" hidden>
+      <p>Tamaru naam khottu che ke sacchu?</p>
+      <input id="recoveryAnswer" type="text" placeholder="Answer" autocomplete="off">
+      <button id="recover" type="button">Submit</button>
+    </div>
+  </div>
+  <p id="status" role="status" aria-live="polite"></p>
+  <div id="songLink" hidden>
+    <a href="jab-zid-pe-aa-gayi-parvati--hanuman-ansh--sadhu-tiwari--shobhinaw-satyaa.mp3">Jab Zid Pe Aa Gayi Parvati</a>
+    <button id="relockSongs" type="button">Lock songs</button>
+  </div>
+  <script>
+    const passwordInput = document.getElementById('musicPassword');
+    const unlockButton = document.getElementById('unlockMusic');
+    const status = document.getElementById('status');
+    const songLink = document.getElementById('songLink');
+    const passwordGate = document.getElementById('passwordGate');
+    const forgotPassword = document.getElementById('forgotPassword');
+    const recovery = document.getElementById('recovery');
+    const recoveryAnswer = document.getElementById('recoveryAnswer');
+    const recover = document.getElementById('recover');
+    const relockSongs = document.getElementById('relockSongs');
+
+    const MUSIC_LOCK_KEY = 'hostel_music_failed_attempts';
+    const MUSIC_LOCK_UNTIL_KEY = 'hostel_music_locked_until';
+    const MUSIC_LOCK_DURATION_MS = 5 * 60 * 1000;
+    let failedAttempts = Number(localStorage.getItem(MUSIC_LOCK_KEY) || 0);
+    let lockedUntil = Number(localStorage.getItem(MUSIC_LOCK_UNTIL_KEY) || 0);
+    let musicLocked = lockedUntil > Date.now();
+
+    function clearMusicLock() {
+      musicLocked = false;
+      failedAttempts = 0;
+      localStorage.removeItem(MUSIC_LOCK_KEY);
+      localStorage.removeItem(MUSIC_LOCK_UNTIL_KEY);
+      [passwordInput, unlockButton, forgotPassword, recoveryAnswer, recover].forEach((element) => {
+        element.disabled = false;
+      });
+      status.textContent = 'You can try again.';
+    }
+
+    function applyMusicLock() {
+      musicLocked = true;
+      status.textContent = 'Songs locked for 5 minutes after 3 incorrect attempts.';
+      [passwordInput, unlockButton, forgotPassword, recoveryAnswer, recover].forEach((element) => {
+        element.disabled = true;
+      });
+      window.setTimeout(clearMusicLock, Math.max(0, lockedUntil - Date.now()));
+    }
+
+    function registerFailedAttempt() {
+      failedAttempts += 1;
+      localStorage.setItem(MUSIC_LOCK_KEY, String(failedAttempts));
+      if (failedAttempts >= 3) {
+        lockedUntil = Date.now() + MUSIC_LOCK_DURATION_MS;
+        localStorage.setItem(MUSIC_LOCK_UNTIL_KEY, String(lockedUntil));
+        applyMusicLock();
+        return;
+      }
+      status.textContent = `Incorrect attempt ${failedAttempts} of 3.`;
+    }
+    function unlockSong() {
+      if (musicLocked) return;
+      if (passwordInput.value !== 'rbgr40670') {
+        status.textContent = 'Incorrect password.';
+        registerFailedAttempt();
+        return;
+      }
+
+      songLink.hidden = false;
+      passwordGate.hidden = true;
+      passwordInput.value = '';
+      status.textContent = 'Unlocked.';
+    }
+
+    unlockButton.addEventListener('click', unlockSong);
+    passwordInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') unlockSong();
+    });
+    forgotPassword.addEventListener('click', () => {
+      recovery.hidden = !recovery.hidden;
+      if (!recovery.hidden) recoveryAnswer.focus();
+    });
+    recover.addEventListener('click', () => {
+      if (musicLocked) return;
+      if (recoveryAnswer.value.trim().toLowerCase() !== 'sacchu') {
+        registerFailedAttempt();
+        recoveryAnswer.select();
+        return;
+      }
+      songLink.hidden = false;
+      passwordGate.hidden = true;
+    });
+    relockSongs.addEventListener('click', () => {
+      songLink.hidden = true;
+      passwordGate.hidden = false;
+      recovery.hidden = true;
+      passwordInput.value = '';
+      recoveryAnswer.value = '';
+      status.textContent = 'Songs locked.';
+    });
+    recoveryAnswer.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') recover.click();
+    });
+    if (musicLocked) applyMusicLock();
+    if (!musicLocked && failedAttempts >= 3) clearMusicLock();
+  </script>
 </body>
 </html>

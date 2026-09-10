@@ -1124,17 +1124,28 @@
       touch-action: none;
       user-select: none;
       cursor: grab;
+      border: 1px solid rgba(173, 229, 255, 0.55);
       background: linear-gradient(135deg, #3aa1ff 0%, #0d6ad6 50%, #0a3a8d 100%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -8px 10px rgba(0,0,0,0.18), 0 8px 18px rgba(16, 112, 235, 0.35);
+      box-shadow: inset 0 2px 0 rgba(255,255,255,0.42), inset 0 -8px 12px rgba(0,0,0,0.3), 0 3px 0 #06316f, 0 10px 18px rgba(16, 112, 235, 0.38);
+      transform: translateY(0);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
     }
+    .music-player summary:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: inset 0 2px 0 rgba(255,255,255,0.48), inset 0 -8px 12px rgba(0,0,0,0.3), 0 5px 0 #06316f, 0 14px 22px rgba(16, 112, 235, 0.45); }
+    .music-player summary:active { transform: translateY(2px); box-shadow: inset 0 2px 0 rgba(255,255,255,0.3), inset 0 -5px 8px rgba(0,0,0,0.35), 0 1px 0 #06316f, 0 5px 10px rgba(16, 112, 235, 0.3); }
     .music-player summary:active { cursor: grabbing; }
     .music-player summary::-webkit-details-marker { display: none; }
-    .music-player summary::before { content: '♫'; color: #fff; }
+    .music-player summary::before { content: '♫'; color: #fff; display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; line-height: 1; }
     .music-player[open] {
       width: min(320px, calc(100vw - 1.5rem));
-      height: auto;
+      height: min(430px, calc(100vh - 1rem));
+      min-width: 260px;
+      min-height: 150px;
+      max-width: calc(100vw - 1rem);
+      max-height: calc(100vh - 1rem);
       border-radius: 18px;
       padding: 0.7rem;
+      overflow: auto;
+      resize: both;
     }
     .music-player[open] summary {
       width: 100%;
@@ -1148,6 +1159,18 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -6px 10px rgba(0,0,0,0.2);
     }
     .music-player[open] summary::before { content: '♫'; }
+    .music-gate { display: grid; gap: 0.45rem; margin-bottom: 0.6rem; }
+    .music-gate-label { color: #d9f3ff; font-size: 0.68rem; font-weight: 800; }
+    .music-gate-row { display: flex; gap: 0.4rem; }
+    .music-password { min-width: 0; flex: 1; padding: 0.55rem 0.65rem; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #fff; outline: none; }
+    .music-password:focus { border-color: #40baff; box-shadow: 0 0 0 2px rgba(64, 186, 255, 0.15); }
+    .music-gate-status { min-height: 0.8rem; color: #ffb4b0; font-size: 0.62rem; }
+    .music-gate.hidden { display: none; }
+    .music-recovery-toggle { width: max-content; padding: 0; border: 0; background: none; color: #8bddff; font-size: 0.62rem; cursor: pointer; }
+    .music-recovery { display: grid; gap: 0.4rem; }
+    .music-recovery.hidden { display: none; }
+    .music-recovery-question { color: #d9f3ff; font-size: 0.65rem; font-weight: 700; }
+    .music-content.locked { display: none; }
     .music-controls { display: flex; gap: 0.4rem; margin-top: 0.2rem; }
     .music-url { min-width: 0; flex: 1; padding: 0.55rem 0.65rem; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #fff; outline: none; }
     .music-load { border: 0; border-radius: 8px; padding: 0 0.7rem; background: linear-gradient(180deg, #3ba8ff 0%, #1e78ee 100%); color: #fff; font-weight: 800; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 6px 12px rgba(18,116,221,0.25); }
@@ -1370,7 +1393,7 @@
       .brand-invite, .made-by, .entry-page-link { width: 100%; text-align: center; }
       .auth-card { width: 100%; padding: 1rem; gap: 0.85rem; }
       .music-player { right: 0.75rem; bottom: 0.75rem; left: auto; width: 58px; }
-      .music-player[open] { width: min(300px, calc(100vw - 24px)); max-height: 38vh; }
+      .music-player[open] { width: min(300px, calc(100vw - 24px)); height: min(430px, calc(100vh - 1rem)); max-width: calc(100vw - 1rem); max-height: calc(100vh - 1rem); }
       .track-results { max-height: 96px; }
       .recent-drawer {
         position: absolute;
@@ -1412,13 +1435,33 @@
 
   <details id="musicPlayer" class="music-player">
     <summary></summary>
-    <div class="music-controls">
-      <input id="musicSearch" class="music-url" type="search" placeholder="Search songs in /songs" aria-label="Search local songs">
-      <button id="searchMusic" class="music-load" type="button">Load</button>
+    <div id="musicGate" class="music-gate">
+      <label class="music-gate-label" for="musicPassword">Enter password to listen</label>
+      <div class="music-gate-row">
+        <input id="musicPassword" class="music-password" type="password" placeholder="Password" autocomplete="off">
+        <button id="unlockMusic" class="music-load" type="button">Unlock</button>
+      </div>
+      <span class="music-gate-label">Contact Raghav at 9981940670 to get the password.</span>
+      <span id="musicGateStatus" class="music-gate-status" role="status" aria-live="polite"></span>
+      <button id="forgotMusicPassword" class="music-recovery-toggle" type="button">Forgot password?</button>
+      <div id="musicRecovery" class="music-recovery hidden">
+        <span class="music-recovery-question">Tamaru naam khottu che ke sacchu?</span>
+        <div class="music-gate-row">
+          <input id="musicRecoveryAnswer" class="music-password" type="text" placeholder="Answer" autocomplete="off">
+          <button id="recoverMusic" class="music-load" type="button">Submit</button>
+        </div>
+      </div>
     </div>
-    <div id="trackResults" class="track-results" aria-live="polite"></div>
-    <audio id="audioPlayer" class="audio-player" controls></audio>
-    <button id="refreshSongs" class="music-load" type="button">Refresh songs</button>
+    <div id="musicContent" class="music-content locked" aria-hidden="true">
+      <div class="music-controls">
+        <input id="musicSearch" class="music-url" type="search" placeholder="Search songs in /songs" aria-label="Search local songs">
+        <button id="searchMusic" class="music-load" type="button">Load</button>
+      </div>
+      <div id="trackResults" class="track-results" aria-live="polite"></div>
+      <button id="refreshSongs" class="music-load" type="button">Refresh songs</button>
+      <button id="relockMusic" class="music-load" type="button">Lock songs</button>
+      <audio id="audioPlayer" class="audio-player" controls></audio>
+    </div>
   </details>
 
   <div class="app-container">
@@ -1749,6 +1792,116 @@
     const audioPlayer = document.getElementById('audioPlayer');
     const musicPlayer = document.getElementById('musicPlayer');
     const musicSummary = musicPlayer.querySelector('summary');
+    const musicPassword = document.getElementById('musicPassword');
+    const unlockMusic = document.getElementById('unlockMusic');
+    const musicGateStatus = document.getElementById('musicGateStatus');
+    const musicGate = document.getElementById('musicGate');
+    const musicContent = document.getElementById('musicContent');
+    const forgotMusicPassword = document.getElementById('forgotMusicPassword');
+    const musicRecovery = document.getElementById('musicRecovery');
+    const musicRecoveryAnswer = document.getElementById('musicRecoveryAnswer');
+    const recoverMusic = document.getElementById('recoverMusic');
+    const relockMusic = document.getElementById('relockMusic');
+    const MUSIC_PASSWORD = 'rbgr40670';
+    const MUSIC_LOCK_KEY = 'hostel_music_failed_attempts';
+    const MUSIC_LOCK_UNTIL_KEY = 'hostel_music_locked_until';
+    const MUSIC_LOCK_DURATION_MS = 5 * 60 * 1000;
+    let musicFailedAttempts = Number(localStorage.getItem(MUSIC_LOCK_KEY) || 0);
+    let musicLockedUntil = Number(localStorage.getItem(MUSIC_LOCK_UNTIL_KEY) || 0);
+    let musicLocked = musicLockedUntil > Date.now();
+    let musicUnlocked = false;
+
+    function clearMusicLock() {
+      musicLocked = false;
+      musicFailedAttempts = 0;
+      localStorage.removeItem(MUSIC_LOCK_KEY);
+      localStorage.removeItem(MUSIC_LOCK_UNTIL_KEY);
+      [musicPassword, unlockMusic, forgotMusicPassword, musicRecoveryAnswer, recoverMusic].forEach((element) => {
+        element.disabled = false;
+      });
+      musicGateStatus.textContent = 'You can try again.';
+    }
+
+    function applyMusicLock() {
+      musicLocked = true;
+      musicGateStatus.textContent = 'Songs locked for 5 minutes after 3 incorrect attempts.';
+      [musicPassword, unlockMusic, forgotMusicPassword, musicRecoveryAnswer, recoverMusic].forEach((element) => {
+        element.disabled = true;
+      });
+      window.setTimeout(clearMusicLock, Math.max(0, musicLockedUntil - Date.now()));
+    }
+
+    function registerFailedMusicAttempt() {
+      musicFailedAttempts += 1;
+      localStorage.setItem(MUSIC_LOCK_KEY, String(musicFailedAttempts));
+      if (musicFailedAttempts >= 3) {
+        musicLockedUntil = Date.now() + MUSIC_LOCK_DURATION_MS;
+        localStorage.setItem(MUSIC_LOCK_UNTIL_KEY, String(musicLockedUntil));
+        applyMusicLock();
+        return;
+      }
+      musicGateStatus.textContent = `Incorrect attempt ${musicFailedAttempts} of 3.`;
+    }
+
+    function grantMusicAccess(message) {
+      if (musicLocked) return;
+      musicUnlocked = true;
+      musicGate.classList.add('hidden');
+      musicContent.classList.remove('locked');
+      musicContent.setAttribute('aria-hidden', 'false');
+      musicPassword.value = '';
+      musicGateStatus.textContent = message;
+      loadLocalSongs();
+    }
+
+    function lockMusicPlayer() {
+      musicUnlocked = false;
+      audioPlayer.pause();
+      audioPlayer.removeAttribute('src');
+      audioPlayer.load();
+      musicContent.classList.add('locked');
+      musicContent.setAttribute('aria-hidden', 'true');
+      musicGate.classList.remove('hidden');
+      musicRecovery.classList.add('hidden');
+      musicPassword.value = '';
+      musicRecoveryAnswer.value = '';
+      musicGateStatus.textContent = 'Songs locked.';
+    }
+
+    function unlockMusicPlayer() {
+      if (musicLocked) return;
+      if (musicPassword.value !== MUSIC_PASSWORD) {
+        registerFailedMusicAttempt();
+        musicPassword.select();
+        return;
+      }
+
+      grantMusicAccess('Unlocked.');
+    }
+
+    unlockMusic.addEventListener('click', unlockMusicPlayer);
+    musicPassword.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') unlockMusicPlayer();
+    });
+    forgotMusicPassword.addEventListener('click', () => {
+      musicRecovery.classList.toggle('hidden');
+      if (!musicRecovery.classList.contains('hidden')) musicRecoveryAnswer.focus();
+    });
+    recoverMusic.addEventListener('click', () => {
+      if (musicLocked) return;
+      if (musicRecoveryAnswer.value.trim().toLowerCase() !== 'sacchu') {
+        registerFailedMusicAttempt();
+        musicRecoveryAnswer.select();
+        return;
+      }
+      grantMusicAccess('Unlocked.');
+    });
+    relockMusic.addEventListener('click', lockMusicPlayer);
+    musicRecoveryAnswer.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') recoverMusic.click();
+    });
+    if (musicLocked) applyMusicLock();
+    if (!musicLocked && musicFailedAttempts >= 3) clearMusicLock();
 
     let musicDragState = null;
     let suppressMusicToggle = false;
@@ -1843,6 +1996,7 @@
 
       trackResults.querySelectorAll('[data-song]').forEach((button) => {
         button.addEventListener('click', () => {
+          if (!musicUnlocked) return;
           const src = button.dataset.song;
           const song = localSongs.find((item) => item.url === src);
           audioPlayer.pause();
