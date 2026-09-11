@@ -1,24 +1,30 @@
 # Hostel Panchayat
 
-Hostel Panchayat is a free, browser-based social lounge made for hostel residents who want a simpler way to stay connected. It gives friends a shared digital space to create rooms, talk live, play music, share files, and hang out without needing a paid app or complicated setup.
+Hostel Panchayat is a vibrant, browser-based social hub built for hostel life. It brings friends together in a single space for live chat, instant rooms, voice and video calls, music, and quick file sharing — all without a paid app or complicated setup.
+
+## Live Demo
+
+Visit the website here:
+
+- https://superhero123634-hub.github.io/Hostel-Panchayat
 
 ## What this website does
 
-- **Instant group rooms:** Create or join a room with a shareable code and bring your hostel circle together.
-- **Real-time chat:** Send text messages and keep the conversation flowing with friends in the same room.
-- **Voice and video calls:** Start direct webcam and microphone calls from inside the room using WebRTC.
-- **Image and file sharing:** Share photos, documents, and useful updates with the people in your room.
-- **Music in the lounge:** Search and play songs from the local `songs/` folder during the chat.
-- **Quick room access:** Share a room link or QR code for easy invites.
-- **Live member view:** See who is active in the room and stay connected with the right people.
-- **Optional location sharing:** Share an approximate area only after browser permission is granted.
-- **Responsive experience:** Works on phones, tablets, and desktops using a browser.
+- **Instant hostel rooms:** Create or join a room with a shareable code and stay connected with your circle.
+- **Real-time chat:** Exchange messages instantly inside the room and keep conversations moving.
+- **Voice and video calls:** Start direct calls with friends using your mic and camera from the browser.
+- **Image and file sharing:** Send photos, files, and useful updates without leaving the room.
+- **Music lounge:** Play songs from the local `songs/` folder while you hang out.
+- **Easy invites:** Share room links or QR codes so everyone can join quickly.
+- **Live member activity:** See who is currently in the room and stay in touch with your group.
+- **Optional location sharing:** Share a rough area only after permission is granted.
+- **Responsive design:** Works smoothly across phones, tablets, and desktops.
 
 ## Run locally
 
 Open `index.html` in a modern browser, or serve this folder with any static web server. Camera and microphone features work best on `localhost` or an HTTPS site.
 
-## Project files
+## Project structure
 
 - `index.html` - Main Hostel Panchayat app
 - `songs/` - Local music page and audio files
@@ -31,4 +37,4 @@ Open `index.html` in a modern browser, or serve this folder with any static web 
 - Phone: [9981940670](tel:9981940670)
 - Email: [superhero123634@gmail.com](mailto:superhero123634@gmail.com)
 
-Hostel Panchayat is free to use. Please respect everyone’s privacy in a room and only share location when you are comfortable doing so.
+Hostel Panchayat is free to use. Please respect everyone’s privacy in the room and share location only when you are comfortable doing so.
