@@ -46,32 +46,78 @@
       justify-content: center;
       align-items: center;
       background-image:
-        radial-gradient(circle at 15% 15%, rgba(226, 173, 64, 0.12) 0%, transparent 42%),
-        radial-gradient(circle at 85% 85%, rgba(118, 75, 19, 0.18) 0%, transparent 45%),
-        radial-gradient(circle at 50% 50%, rgba(13, 11, 8, 0.88) 0%, #0d0b08 100%);
+        radial-gradient(circle at 15% 15%, rgba(110, 215, 255, 0.16) 0%, transparent 30%),
+        radial-gradient(circle at 75% 18%, rgba(117, 88, 255, 0.15) 0%, transparent 28%),
+        radial-gradient(circle at 50% 60%, rgba(15, 118, 160, 0.12) 0%, transparent 38%),
+        linear-gradient(150deg, #050a13 0%, #0f1926 28%, #0a111d 52%, #050a12 100%);
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      border-radius: 50%;
+      filter: blur(30px);
+      opacity: 0.55;
+      pointer-events: none;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      width: 48vw;
+      height: 48vw;
+      left: -10vw;
+      top: 8vh;
+      background: radial-gradient(circle, rgba(66, 214, 255, 0.42), rgba(66, 214, 255, 0.06) 38%, transparent 70%);
+    }
+
+    body::after {
+      width: 42vw;
+      height: 42vw;
+      right: -8vw;
+      bottom: -10vh;
+      background: radial-gradient(circle, rgba(78, 204, 172, 0.32), rgba(78, 204, 172, 0.08) 40%, transparent 70%);
+      animation-delay: 2s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(18px, -18px, 0) scale(1.08); }
     }
 
     .app-container {
       width: 100%;
       max-width: 520px;
       height: 94vh;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(18, 24, 35, 0.82), rgba(8, 13, 22, 0.92));
+      border: 1px solid rgba(127, 210, 255, 0.22);
       border-radius: 28px;
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+      box-shadow: 0 32px 80px -20px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.12);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      isolation: isolate;
+    }
+
+    .app-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(130, 220, 255, 0.10), rgba(126, 90, 255, 0.08), rgba(110, 211, 163, 0.08));
+      z-index: -1;
+      pointer-events: none;
     }
 
     /* Classy Login / Setup Modal */
     .login-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(6, 9, 14, 0.97);
+      background: linear-gradient(180deg, rgba(4, 9, 17, 0.84), rgba(10, 16, 24, 0.96));
       backdrop-filter: blur(24px);
       z-index: 50;
       display: flex;
@@ -80,6 +126,31 @@
       align-items: center;
       padding: 2.25rem;
       transition: opacity 0.4s ease, visibility 0.4s ease;
+      overflow: hidden;
+    }
+
+    .login-overlay::before,
+    .login-overlay::after {
+      content: "";
+      position: absolute;
+      width: 32rem;
+      height: 32rem;
+      border-radius: 50%;
+      filter: blur(55px);
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .login-overlay::before {
+      top: -14rem;
+      left: -8rem;
+      background: radial-gradient(circle, rgba(75, 196, 255, 0.38), rgba(75, 196, 255, 0.08) 42%, transparent 70%);
+    }
+
+    .login-overlay::after {
+      right: -9rem;
+      bottom: -14rem;
+      background: radial-gradient(circle, rgba(76, 239, 209, 0.34), rgba(76, 239, 209, 0.08) 42%, transparent 70%);
     }
 
     .login-overlay.hidden {
@@ -103,23 +174,34 @@
     }
 
     .brand-logo-holder {
-      width: 116px;
-      height: 116px;
-      flex: 0 0 116px;
+      width: 122px;
+      height: 122px;
+      flex: 0 0 122px;
       margin-bottom: 1rem;
-      border: 1px solid rgba(231, 190, 104, 0.48);
-      border-radius: 26px;
-      background: linear-gradient(145deg, rgba(255, 240, 173, 0.18), rgba(91, 57, 15, 0.38));
-      box-shadow: 0 14px 34px rgba(193, 135, 42, 0.22), inset 0 0 0 1px rgba(255,255,255,0.08);
+      border: 1px solid rgba(145, 220, 255, 0.42);
+      border-radius: 28px;
+      background: linear-gradient(145deg, rgba(255, 247, 196, 0.18), rgba(88, 141, 255, 0.18), rgba(17, 34, 52, 0.68));
+      box-shadow: 0 14px 34px rgba(62, 140, 255, 0.20), inset 0 1px 0 rgba(255,255,255,0.18), inset 0 -10px 20px rgba(0, 0, 0, 0.18);
       display: grid;
       place-items: center;
       overflow: hidden;
+      transform: rotate(-1.5deg);
+      position: relative;
+    }
+
+    .brand-logo-holder::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px;
+      pointer-events: none;
     }
 
     .brand-image-holder {
-      width: 78%;
-      height: 78%;
-      border: 1px dashed rgba(241, 212, 135, 0.55);
+      width: 80%;
+      height: 80%;
+      border: 1px dashed rgba(241, 212, 135, 0.65);
       border-radius: 18px;
       display: grid;
       place-items: center;
@@ -129,6 +211,7 @@
       letter-spacing: 0.08em;
       text-align: center;
       text-transform: uppercase;
+      box-shadow: inset 0 0 20px rgba(255,255,255,0.05);
     }
 
     @media (max-height: 760px) {
@@ -143,7 +226,7 @@
       font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 40%, #00f2fe 100%);
+      background: linear-gradient(135deg, #f8ffd5 12%, #d5f6ff 30%, #8af0ff 52%, #f8d98c 78%, #fffaf0 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -151,6 +234,7 @@
       width: min(100%, 560px);
       align-self: center;
       text-align: left;
+      text-shadow: 0 10px 30px rgba(96, 210, 255, 0.2);
     }
 
     .brand-tagline {
@@ -166,7 +250,7 @@
       width: min(100%, 560px);
       max-width: 560px;
       margin: 0 auto 0.7rem;
-      color: #f1d487;
+      color: #e7d0a4;
       font-size: 0.92rem;
       font-weight: 600;
       line-height: 1.55;
@@ -186,6 +270,101 @@
       text-align: left;
       align-self: center;
     }
+
+    .brand-badges {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0 auto 0.85rem;
+    }
+
+    .brand-badge {
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #dffcff;
+      background: rgba(102, 201, 255, 0.12);
+      border: 1px solid rgba(102, 201, 255, 0.25);
+      border-radius: 999px;
+      padding: 0.42rem 0.7rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+
+    .product-intro {
+      width: min(100%, 760px);
+      margin: 0 auto 1rem;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(12, 20, 32, 0.62);
+      border: 1px solid rgba(139, 211, 255, 0.18);
+      border-radius: 18px;
+      box-shadow: 0 18px 34px rgba(7, 13, 24, 0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .product-intro h2 {
+      color: #e9f8ff;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      margin-bottom: 0.8rem;
+    }
+
+    .free-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.55rem;
+      text-align: left;
+    }
+
+    .free-feature {
+      min-width: 0;
+      padding: 0.8rem 0.75rem;
+      border: 1px solid rgba(91, 184, 255, 0.18);
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(18, 31, 48, 0.74), rgba(11, 17, 27, 0.9));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .free-feature:hover {
+      transform: translateY(-2px);
+      border-color: rgba(132, 219, 255, 0.32);
+    }
+
+    .free-feature strong {
+      display: block;
+      color: #dff6ff;
+      font-size: 0.72rem;
+      line-height: 1.3;
+      margin-bottom: 0.25rem;
+    }
+
+    .free-feature span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 0.64rem;
+      line-height: 1.45;
+    }
+
+    .developer-contact {
+      width: min(100%, 760px);
+      margin: 0.1rem auto 1rem;
+      padding: 0.7rem 0.85rem;
+      border-top: 1px solid rgba(91, 184, 255, 0.16);
+      border-bottom: 1px solid rgba(91, 184, 255, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7rem 1.1rem;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 0.68rem;
+    }
+
+    .developer-contact strong { color: #e9f8ff; }
+    .developer-contact a { color: #8bddff; text-decoration: none; }
+    .developer-contact a:hover { text-decoration: underline; }
 
     .auth-card {
       width: min(100%, 560px);
@@ -224,39 +403,6 @@
       font-weight: 600;
       cursor: pointer;
     }
-
-    .captcha-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 0.55rem;
-      align-items: end;
-    }
-
-    .captcha-question {
-      min-height: 48px;
-      display: flex;
-      align-items: center;
-      padding: 0 0.9rem;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 12px;
-      color: #f1d487;
-      background: rgba(10, 14, 23, 0.8);
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-
-    .captcha-refresh {
-      min-height: 48px;
-      padding: 0 0.8rem;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 12px;
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.06);
-      cursor: pointer;
-      font-size: 1rem;
-    }
-
-    .captcha-refresh:hover { background: rgba(255, 255, 255, 0.12); }
 
     .classy-input {
       width: 100%;
@@ -1124,28 +1270,17 @@
       touch-action: none;
       user-select: none;
       cursor: grab;
-      border: 1px solid rgba(173, 229, 255, 0.55);
       background: linear-gradient(135deg, #3aa1ff 0%, #0d6ad6 50%, #0a3a8d 100%);
-      box-shadow: inset 0 2px 0 rgba(255,255,255,0.42), inset 0 -8px 12px rgba(0,0,0,0.3), 0 3px 0 #06316f, 0 10px 18px rgba(16, 112, 235, 0.38);
-      transform: translateY(0);
-      transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -8px 10px rgba(0,0,0,0.18), 0 8px 18px rgba(16, 112, 235, 0.35);
     }
-    .music-player summary:hover { filter: brightness(1.08); transform: translateY(-2px); box-shadow: inset 0 2px 0 rgba(255,255,255,0.48), inset 0 -8px 12px rgba(0,0,0,0.3), 0 5px 0 #06316f, 0 14px 22px rgba(16, 112, 235, 0.45); }
-    .music-player summary:active { transform: translateY(2px); box-shadow: inset 0 2px 0 rgba(255,255,255,0.3), inset 0 -5px 8px rgba(0,0,0,0.35), 0 1px 0 #06316f, 0 5px 10px rgba(16, 112, 235, 0.3); }
     .music-player summary:active { cursor: grabbing; }
     .music-player summary::-webkit-details-marker { display: none; }
-    .music-player summary::before { content: '♫'; color: #fff; display: inline-flex; align-items: center; justify-content: center; width: 1em; height: 1em; line-height: 1; }
+    .music-player summary::before { content: '♫'; color: #fff; }
     .music-player[open] {
       width: min(320px, calc(100vw - 1.5rem));
-      height: min(430px, calc(100vh - 1rem));
-      min-width: 260px;
-      min-height: 150px;
-      max-width: calc(100vw - 1rem);
-      max-height: calc(100vh - 1rem);
+      height: auto;
       border-radius: 18px;
       padding: 0.7rem;
-      overflow: auto;
-      resize: both;
     }
     .music-player[open] summary {
       width: 100%;
@@ -1159,20 +1294,6 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -6px 10px rgba(0,0,0,0.2);
     }
     .music-player[open] summary::before { content: '♫'; }
-    .music-gate { display: grid; gap: 0.45rem; margin-bottom: 0.6rem; }
-    .music-gate-label { color: #d9f3ff; font-size: 0.68rem; font-weight: 800; }
-    .music-gate-row { display: flex; gap: 0.4rem; }
-    .music-password { min-width: 0; flex: 1; padding: 0.55rem 0.65rem; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #fff; outline: none; }
-    .music-password:focus { border-color: #40baff; box-shadow: 0 0 0 2px rgba(64, 186, 255, 0.15); }
-    .password-toggle { width: 38px; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #d9f3ff; cursor: pointer; }
-    .password-toggle:hover { background: rgba(64, 186, 255, 0.2); }
-    .music-gate-status { min-height: 0.8rem; color: #ffb4b0; font-size: 0.62rem; }
-    .music-gate.hidden { display: none; }
-    .music-recovery-toggle { width: max-content; padding: 0; border: 0; background: none; color: #8bddff; font-size: 0.62rem; cursor: pointer; }
-    .music-recovery { display: grid; gap: 0.4rem; }
-    .music-recovery.hidden { display: none; }
-    .music-recovery-question { color: #d9f3ff; font-size: 0.65rem; font-weight: 700; }
-    .music-content.locked { display: none; }
     .music-controls { display: flex; gap: 0.4rem; margin-top: 0.2rem; }
     .music-url { min-width: 0; flex: 1; padding: 0.55rem 0.65rem; border: 1px solid rgba(91, 184, 255, 0.25); border-radius: 8px; background: rgba(3, 12, 25, 0.8); color: #fff; outline: none; }
     .music-load { border: 0; border-radius: 8px; padding: 0 0.7rem; background: linear-gradient(180deg, #3ba8ff 0%, #1e78ee 100%); color: #fff; font-weight: 800; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 6px 12px rgba(18,116,221,0.25); }
@@ -1372,6 +1493,16 @@
       white-space: nowrap;
     }
 
+    .home-brand {
+      color: #a9e5ff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .home-brand:hover { color: #fff; text-decoration: underline; }
+
     .audio-help {
       position: fixed;
       inset: auto 1rem 1rem auto;
@@ -1393,9 +1524,13 @@
       .brand-logo-holder { width: 82px; height: 82px; flex-basis: 82px; margin-bottom: 0.7rem; }
       .brand-title { width: 100%; font-size: 1.8rem; text-align: center; }
       .brand-invite, .made-by, .entry-page-link { width: 100%; text-align: center; }
+      .free-feature-grid { grid-template-columns: 1fr; gap: 0.45rem; }
+      .free-feature { padding: 0.65rem 0.75rem; }
+      .product-intro h2 { font-size: 0.88rem; }
+      .developer-contact { line-height: 1.5; gap: 0.2rem 0.75rem; }
       .auth-card { width: 100%; padding: 1rem; gap: 0.85rem; }
       .music-player { right: 0.75rem; bottom: 0.75rem; left: auto; width: 58px; }
-      .music-player[open] { width: min(300px, calc(100vw - 24px)); height: min(430px, calc(100vh - 1rem)); max-width: calc(100vw - 1rem); max-height: calc(100vh - 1rem); }
+      .music-player[open] { width: min(300px, calc(100vw - 24px)); max-height: 38vh; }
       .track-results { max-height: 96px; }
       .recent-drawer {
         position: absolute;
@@ -1437,34 +1572,13 @@
 
   <details id="musicPlayer" class="music-player">
     <summary></summary>
-    <div id="musicGate" class="music-gate">
-      <label class="music-gate-label" for="musicPassword">Enter password to listen</label>
-      <div class="music-gate-row">
-        <input id="musicPassword" class="music-password" type="password" placeholder="Password" autocomplete="off">
-        <button id="toggleMusicPassword" class="password-toggle" type="button" aria-label="Show password" aria-pressed="false" title="Show password">&#128065;</button>
-        <button id="unlockMusic" class="music-load" type="button">Unlock</button>
-      </div>
-      <span class="music-gate-label">Contact Raghav at 9981940670 to get the password.</span>
-      <span id="musicGateStatus" class="music-gate-status" role="status" aria-live="polite"></span>
-      <button id="forgotMusicPassword" class="music-recovery-toggle" type="button">Forgot password?</button>
-      <div id="musicRecovery" class="music-recovery hidden">
-        <span class="music-recovery-question">Tamaru naam khottu che ke sacchu?</span>
-        <div class="music-gate-row">
-          <input id="musicRecoveryAnswer" class="music-password" type="text" placeholder="Answer" autocomplete="off">
-          <button id="recoverMusic" class="music-load" type="button">Submit</button>
-        </div>
-      </div>
+    <div class="music-controls">
+      <input id="musicSearch" class="music-url" type="search" placeholder="Search songs in /songs" aria-label="Search local songs">
+      <button id="searchMusic" class="music-load" type="button">Load</button>
     </div>
-    <div id="musicContent" class="music-content locked" aria-hidden="true">
-      <div class="music-controls">
-        <input id="musicSearch" class="music-url" type="search" placeholder="Search songs in /songs" aria-label="Search local songs">
-        <button id="searchMusic" class="music-load" type="button">Load</button>
-      </div>
-      <div id="trackResults" class="track-results" aria-live="polite"></div>
-      <button id="refreshSongs" class="music-load" type="button">Refresh songs</button>
-      <button id="relockMusic" class="music-load" type="button">Lock songs</button>
-      <audio id="audioPlayer" class="audio-player" controls></audio>
-    </div>
+    <div id="trackResults" class="track-results" aria-live="polite"></div>
+    <audio id="audioPlayer" class="audio-player" controls></audio>
+    <button id="refreshSongs" class="music-load" type="button">Refresh songs</button>
   </details>
 
   <div class="app-container">
@@ -1502,9 +1616,38 @@
       <div class="brand-logo-holder" aria-label="Hostel Panchayat logo image holder">
         <img class="brand-image-holder" src="./logo.png" alt="Hostel Panchayat logo">
       </div>
+      <div class="brand-badges" aria-label="Product highlights">
+        <span class="brand-badge">Free</span>
+        <span class="brand-badge">Instant</span>
+        <span class="brand-badge">Hostel ready</span>
+      </div>
       <h1 class="brand-title">Hostel Panchayat</h1>
-      <p class="brand-invite">Apna naam likhiye aur friends ke saath baat karna shuru kijiye.</p>
+      <p class="brand-invite">Your hostel social lounge for instant rooms, live conversations, calls, music, and shared moments with friends.</p>
       <p class="made-by">Made by Raghav</p>
+
+      <section class="product-intro" aria-labelledby="freeFeaturesTitle">
+        <h2 id="freeFeaturesTitle">A free digital hangout for hostel life</h2>
+        <div class="free-feature-grid">
+          <article class="free-feature">
+            <strong>Private room chats</strong>
+            <span>Jump into a room, share a code, and keep your hostel circle connected instantly.</span>
+          </article>
+          <article class="free-feature">
+            <strong>Voice & video calls</strong>
+            <span>Talk live with friends directly inside the room using browser-based calling.</span>
+          </article>
+          <article class="free-feature">
+            <strong>Files, photos & music</strong>
+            <span>Send images, files, songs, and quick updates without needing any paid plan.</span>
+          </article>
+        </div>
+      </section>
+
+      <div class="developer-contact" aria-label="Developer contact details">
+        <span><strong>Developed by Raghav</strong></span>
+        <a href="tel:9981940670">9981940670</a>
+        <a href="mailto:superhero123634@gmail.com">superhero123634@gmail.com</a>
+      </div>
 
       <div class="auth-card">
         <div>
@@ -1512,26 +1655,12 @@
           <input type="text" id="usernameInput" class="classy-input" placeholder="Your name" maxlength="24">
         </div>
 
-        <div>
-          <label class="input-label" for="roomNameInput">Room name</label>
-          <input type="text" id="roomNameInput" class="classy-input" placeholder="Enter the room name" maxlength="48" autocomplete="off">
-        </div>
-
-        <div>
-          <label class="input-label" for="captchaInput">Verification</label>
-          <div class="captcha-row">
-            <div id="captchaQuestion" class="captcha-question" aria-live="polite"></div>
-            <button id="btnRefreshCaptcha" class="captcha-refresh" type="button" title="New verification question" aria-label="New verification question">↻</button>
-          </div>
-          <input type="number" id="captchaInput" class="classy-input" placeholder="Answer" inputmode="numeric" min="0" required>
-        </div>
-
         <button id="btnEnterLounge" class="btn-classy-primary">
           <span>➤</span> Enter chat
         </button>
 
         <p class="smart-notice">
-          This website is for educational purposes only.
+          Share the room link with your friends so they can join the same chat.
         </p>
       </div>
     </div>
@@ -1622,7 +1751,7 @@
       </div>
 
       <div class="header-actions">
-        <span class="home-brand">Hostel Panchayat</span>
+        <span class="home-brand" title="Hostel Panchayat">Hostel Panchayat</span>
         <span class="header-credit">Made by Raghav</span>
         <button id="btnBackRoom" class="header-icon-btn" title="Back to start" aria-label="Back to start">←</button>
         <button id="btnNewChat" class="header-icon-btn" title="New chat" aria-label="New chat">＋</button>
@@ -1710,22 +1839,12 @@
     }
     let isTypingTimeout = null;
     let pendingCallAction = null;
-    let recentRooms = [];
-    try {
-      const storedRooms = JSON.parse(localStorage.getItem('hosteller_recent_rooms') || '[]');
-      recentRooms = Array.isArray(storedRooms) ? storedRooms : [];
-    } catch (error) {
-      localStorage.removeItem('hosteller_recent_rooms');
-    }
+    let recentRooms = JSON.parse(localStorage.getItem('hosteller_recent_rooms') || '[]');
     const fallbackName = 'Your name';
 
     const remoteAudioStream = document.getElementById('remoteAudioStream');
     const loginModal = document.getElementById('loginModal');
     const usernameInput = document.getElementById('usernameInput');
-    const roomNameInput = document.getElementById('roomNameInput');
-    const captchaQuestion = document.getElementById('captchaQuestion');
-    const captchaInput = document.getElementById('captchaInput');
-    const btnRefreshCaptcha = document.getElementById('btnRefreshCaptcha');
     const btnEnterLounge = document.getElementById('btnEnterLounge');
     const displayMeetCode = document.getElementById('displayMeetCode');
     const qrMeetCodeText = document.getElementById('qrMeetCodeText');
@@ -1748,16 +1867,6 @@
 
     function safeName(value) {
       return String(value || '').trim() || fallbackName;
-    }
-
-    let captchaAnswer = 0;
-
-    function refreshCaptcha() {
-      const firstNumber = Math.floor(Math.random() * 8) + 2;
-      const secondNumber = Math.floor(Math.random() * 8) + 1;
-      captchaAnswer = firstNumber + secondNumber;
-      captchaQuestion.textContent = `${firstNumber} + ${secondNumber} = ?`;
-      captchaInput.value = '';
     }
 
     const permModal = document.getElementById('permModal');
@@ -1795,124 +1904,6 @@
     const audioPlayer = document.getElementById('audioPlayer');
     const musicPlayer = document.getElementById('musicPlayer');
     const musicSummary = musicPlayer.querySelector('summary');
-    const musicPassword = document.getElementById('musicPassword');
-    const toggleMusicPassword = document.getElementById('toggleMusicPassword');
-    const unlockMusic = document.getElementById('unlockMusic');
-    const musicGateStatus = document.getElementById('musicGateStatus');
-    const musicGate = document.getElementById('musicGate');
-    const musicContent = document.getElementById('musicContent');
-    const forgotMusicPassword = document.getElementById('forgotMusicPassword');
-    const musicRecovery = document.getElementById('musicRecovery');
-    const musicRecoveryAnswer = document.getElementById('musicRecoveryAnswer');
-    const recoverMusic = document.getElementById('recoverMusic');
-    const relockMusic = document.getElementById('relockMusic');
-    const MUSIC_PASSWORD = 'rbgr40670';
-    const MUSIC_LOCK_KEY = 'hostel_music_failed_attempts';
-    const MUSIC_LOCK_UNTIL_KEY = 'hostel_music_locked_until';
-    const MUSIC_LOCK_DURATION_MS = 5 * 60 * 1000;
-    let musicFailedAttempts = Number(localStorage.getItem(MUSIC_LOCK_KEY) || 0);
-    let musicLockedUntil = Number(localStorage.getItem(MUSIC_LOCK_UNTIL_KEY) || 0);
-    let musicLocked = musicLockedUntil > Date.now();
-    let musicUnlocked = false;
-
-    function clearMusicLock() {
-      musicLocked = false;
-      musicFailedAttempts = 0;
-      localStorage.removeItem(MUSIC_LOCK_KEY);
-      localStorage.removeItem(MUSIC_LOCK_UNTIL_KEY);
-      [musicPassword, toggleMusicPassword, unlockMusic, forgotMusicPassword, musicRecoveryAnswer, recoverMusic].forEach((element) => {
-        element.disabled = false;
-      });
-      musicGateStatus.textContent = 'You can try again.';
-    }
-
-    function applyMusicLock() {
-      musicLocked = true;
-      musicGateStatus.textContent = 'Songs locked for 5 minutes after 3 incorrect attempts.';
-      [musicPassword, unlockMusic, forgotMusicPassword, musicRecoveryAnswer, recoverMusic].forEach((element) => {
-        element.disabled = true;
-      });
-      window.setTimeout(clearMusicLock, Math.max(0, musicLockedUntil - Date.now()));
-    }
-
-    function registerFailedMusicAttempt() {
-      musicFailedAttempts += 1;
-      localStorage.setItem(MUSIC_LOCK_KEY, String(musicFailedAttempts));
-      if (musicFailedAttempts >= 3) {
-        musicLockedUntil = Date.now() + MUSIC_LOCK_DURATION_MS;
-        localStorage.setItem(MUSIC_LOCK_UNTIL_KEY, String(musicLockedUntil));
-        applyMusicLock();
-        return;
-      }
-      musicGateStatus.textContent = `Incorrect attempt ${musicFailedAttempts} of 3.`;
-    }
-
-    function grantMusicAccess(message) {
-      if (musicLocked) return;
-      musicUnlocked = true;
-      musicGate.classList.add('hidden');
-      musicContent.classList.remove('locked');
-      musicContent.setAttribute('aria-hidden', 'false');
-      musicPassword.value = '';
-      musicGateStatus.textContent = message;
-      loadLocalSongs();
-    }
-
-    function lockMusicPlayer() {
-      musicUnlocked = false;
-      audioPlayer.pause();
-      audioPlayer.removeAttribute('src');
-      audioPlayer.load();
-      musicContent.classList.add('locked');
-      musicContent.setAttribute('aria-hidden', 'true');
-      musicGate.classList.remove('hidden');
-      musicRecovery.classList.add('hidden');
-      musicPassword.value = '';
-      musicRecoveryAnswer.value = '';
-      musicGateStatus.textContent = 'Songs locked.';
-    }
-
-    function unlockMusicPlayer() {
-      if (musicLocked) return;
-      if (musicPassword.value !== MUSIC_PASSWORD) {
-        registerFailedMusicAttempt();
-        musicPassword.select();
-        return;
-      }
-
-      grantMusicAccess('Unlocked.');
-    }
-
-    unlockMusic.addEventListener('click', unlockMusicPlayer);
-    toggleMusicPassword.addEventListener('click', () => {
-      const isVisible = musicPassword.type === 'text';
-      musicPassword.type = isVisible ? 'password' : 'text';
-      toggleMusicPassword.setAttribute('aria-pressed', String(!isVisible));
-      toggleMusicPassword.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
-      toggleMusicPassword.title = isVisible ? 'Show password' : 'Hide password';
-    });
-    musicPassword.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') unlockMusicPlayer();
-    });
-    forgotMusicPassword.addEventListener('click', () => {
-      musicRecovery.classList.toggle('hidden');
-      if (!musicRecovery.classList.contains('hidden')) musicRecoveryAnswer.focus();
-    });
-    recoverMusic.addEventListener('click', () => {
-      if (musicLocked) return;
-      if (musicRecoveryAnswer.value.trim().toLowerCase() !== 'sacchu') {
-        registerFailedMusicAttempt();
-        musicRecoveryAnswer.select();
-        return;
-      }
-      grantMusicAccess('Unlocked.');
-    });
-    relockMusic.addEventListener('click', lockMusicPlayer);
-    musicRecoveryAnswer.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') recoverMusic.click();
-    });
-    if (musicLocked) applyMusicLock();
-    if (!musicLocked && musicFailedAttempts >= 3) clearMusicLock();
 
     let musicDragState = null;
     let suppressMusicToggle = false;
@@ -1972,7 +1963,6 @@
     });
 
     const songsFolder = './songs/';
-    const githubSongsApi = 'https://api.github.com/repos/Superhero123634-hub/Hostel-Panchayat/contents/songs';
     const fallbackSongs = [{
       file: 'jab-zid-pe-aa-gayi-parvati--hanuman-ansh--sadhu-tiwari--shobhinaw-satyaa.mp3',
       label: 'Jab Zid Pe Aa Gayi Parvati',
@@ -2007,55 +1997,18 @@
 
       trackResults.querySelectorAll('[data-song]').forEach((button) => {
         button.addEventListener('click', () => {
-          if (!musicUnlocked) return;
           const src = button.dataset.song;
-          const song = localSongs.find((item) => item.url === src);
           audioPlayer.pause();
           audioPlayer.src = src;
           audioPlayer.load();
           audioPlayer.oncanplay = () => audioPlayer.play().catch(() => notify('Tap the play button to start the song.'));
-          audioPlayer.onerror = () => {
-            if (song && song.fallbackUrl && audioPlayer.src !== song.fallbackUrl) {
-              audioPlayer.src = song.fallbackUrl;
-              audioPlayer.load();
-              return;
-            }
-            notify('This song file could not be loaded. Check the file name or format.');
-          };
+          audioPlayer.onerror = () => notify('This song file could not be loaded. Check the file name or format.');
         });
       });
     }
 
-    async function loadGitHubSongs() {
-      const response = await fetch(githubSongsApi, {
-        headers: { Accept: 'application/vnd.github+json' }
-      });
-      if (!response.ok) return [];
-
-      const entries = await response.json();
-      return entries
-        .filter((entry) => entry.type === 'file' && /\.(mp3|wav|m4a|aac|ogg)$/i.test(entry.name))
-        .map((entry) => ({
-          file: entry.name,
-          label: formatSongName(entry.name),
-          url: `${songsFolder}${encodeURIComponent(entry.name)}`,
-          fallbackUrl: entry.download_url
-        }));
-    }
-
     async function loadLocalSongs() {
       try {
-        const githubSongs = await loadGitHubSongs();
-        if (githubSongs.length) {
-          localSongs = githubSongs;
-          const term = musicSearch.value.trim().toLowerCase();
-          const filtered = term
-            ? localSongs.filter((song) => `${song.label} ${song.file}`.toLowerCase().includes(term))
-            : localSongs;
-          renderLocalSongs(filtered);
-          return;
-        }
-
         const response = await fetch(songsFolder);
         if (!response.ok) {
           localSongs = fallbackSongs;
@@ -2074,11 +2027,11 @@
           };
         });
 
-        localSongs = songs.length ? songs : fallbackSongs;
+        localSongs = songs;
         const term = musicSearch.value.trim().toLowerCase();
         const filtered = term
-          ? localSongs.filter((song) => `${song.label} ${song.file}`.toLowerCase().includes(term))
-          : localSongs;
+          ? songs.filter((song) => `${song.label} ${song.file}`.toLowerCase().includes(term))
+          : songs;
         renderLocalSongs(filtered);
       } catch (error) {
         localSongs = fallbackSongs;
@@ -2109,8 +2062,6 @@
 
 
     usernameInput.value = safeName(myUsername);
-    roomNameInput.value = localStorage.getItem('hosteller_room_name') || '';
-    refreshCaptcha();
     usernameInput.addEventListener('focus', () => {
       if (usernameInput.value === fallbackName) usernameInput.value = '';
     }, { once: true });
@@ -2129,25 +2080,6 @@
       return String(value).replace(/[&<>'"]/g, (character) => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
       }[character]));
-    }
-
-    function safeAttachmentUrl(value, allowedType = '') {
-      const url = String(value || '');
-      const dataPrefix = allowedType ? `data:${allowedType}/` : 'data:';
-      if (url.startsWith(dataPrefix) || url.startsWith('blob:')) return url;
-      if (/^https:\/\//i.test(url)) return url;
-      return '';
-    }
-
-    function appendBubbleMeta(meta, time, isOutgoing) {
-      const timeElement = document.createElement('span');
-      timeElement.textContent = time;
-      meta.appendChild(timeElement);
-      if (isOutgoing) {
-        const statusElement = document.createElement('span');
-        statusElement.textContent = '• Delivered';
-        meta.appendChild(statusElement);
-      }
     }
 
     function formatRecentTime(timestamp) {
@@ -2281,8 +2213,9 @@
       }, { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 });
     });
 
-    function createRoomId(roomName) {
-      return normalizeRoomName(roomName);
+    function createRoomId() {
+      const chars = 'ABCDEFGHJKLMNPRSTUVWXYZ0123456789';
+      return Array.from({ length: 17 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
     }
 
     document.getElementById('searchMusic').addEventListener('click', async () => {
@@ -2380,7 +2313,7 @@
         .replace(/[^a-z0-9-]+/g, '-')
         .replace(/^-+|-+$/g, '')
         .slice(0, 48);
-      return normalized;
+      return normalized || createRoomId();
     }
 
     function getRoomFromHash() {
@@ -2399,12 +2332,13 @@
 
       btnEnterLounge.textContent = 'Entering Room...';
 
+      peer = new Peer(hostTargetId, peerConfig);
+
       if (mode === 'join') {
+        peer.destroy();
         joinAsGuest(hostTargetId);
         return;
       }
-
-      peer = new Peer(hostTargetId, peerConfig);
 
       peer.on('open', () => {
         onRoomReady(true);
@@ -2509,7 +2443,6 @@
       });
 
       connection.on('data', (payload) => {
-        if (!payload || typeof payload !== 'object') return;
         if (payload.type === 'handshake') {
           const memberName = safeName(payload.name);
           activeMembers.set(connection.peer, memberName);
@@ -2597,7 +2530,7 @@
       bubble.textContent = text;
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      appendBubbleMeta(meta, time, isOutgoing);
+      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2615,14 +2548,14 @@
       bubble.className = 'bubble';
       bubble.style.padding = '0.4rem';
       const image = document.createElement('img');
-      image.src = safeAttachmentUrl(dataUrl, 'image');
+      image.src = dataUrl;
       image.className = 'bubble-image';
       image.alt = 'Shared photo';
       image.addEventListener('click', () => window.open(dataUrl, '_blank', 'noopener'));
       bubble.appendChild(image);
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      appendBubbleMeta(meta, time, isOutgoing);
+      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2637,11 +2570,10 @@
       row.className = `chat-bubble-row ${isOutgoing ? 'outgoing' : 'incoming'}`;
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      const safeMime = typeof mime === 'string' ? mime : '';
-      const media = document.createElement(safeMime.startsWith('video/') ? 'video' : 'audio');
+      const media = document.createElement(mime.startsWith('video/') ? 'video' : 'audio');
       media.className = 'shared-media';
       media.controls = true;
-      media.src = safeAttachmentUrl(dataUrl, safeMime.split('/')[0]);
+      media.src = dataUrl;
       media.setAttribute('aria-label', fileName);
       bubble.appendChild(media);
       const name = document.createElement('div');
@@ -2650,7 +2582,7 @@
       bubble.appendChild(name);
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      appendBubbleMeta(meta, time, isOutgoing);
+      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2667,7 +2599,7 @@
       bubble.className = 'bubble';
       const link = document.createElement('a');
       link.className = 'shared-file';
-      link.href = safeAttachmentUrl(dataUrl);
+      link.href = dataUrl;
       link.download = fileName;
       link.target = '_blank';
       link.rel = 'noopener';
@@ -2679,7 +2611,7 @@
       bubble.appendChild(link);
       const meta = document.createElement('div');
       meta.className = 'bubble-meta';
-      appendBubbleMeta(meta, time, isOutgoing);
+      meta.innerHTML = `<span>${time}</span>${isOutgoing ? '<span>• Delivered</span>' : ''}`;
       row.append(bubble, meta);
       chatStream.appendChild(row);
       chatStream.scrollTop = chatStream.scrollHeight;
@@ -2934,30 +2866,16 @@
 
     btnVoiceCall.addEventListener('click', () => startCall(false));
     btnVideoCall.addEventListener('click', () => startCall(true));
-    btnRefreshCaptcha.addEventListener('click', refreshCaptcha);
 
     btnEnterLounge.addEventListener('click', () => {
       myUsername = usernameInput.value.trim() || 'Your name';
-      const roomName = roomNameInput.value.trim();
-      const sharedRoom = getRoomFromHash();
-      const room = sharedRoom || createRoomId(roomName);
-      if (Number(captchaInput.value) !== captchaAnswer) {
-        captchaInput.focus();
-        notify('Please solve the verification question.');
-        refreshCaptcha();
-        return;
-      }
-      if (!room) {
-        roomNameInput.focus();
-        notify('Enter a room name first.');
-        return;
-      }
       monitorMode = myUsername.toLowerCase() === 'jaimatajihariom';
       activeUsersPanel.classList.toggle('visible', monitorMode);
       renderActiveUsers();
       localStorage.setItem('hosteller_user', myUsername);
-      if (!sharedRoom) localStorage.setItem('hosteller_room_name', roomName);
 
+      const sharedRoom = getRoomFromHash();
+      const room = sharedRoom || createRoomId();
       const mode = sharedRoom ? 'join' : 'create';
       window.location.hash = `room=${encodeURIComponent(room)}`;
       enterSmartRoom(room, mode);
