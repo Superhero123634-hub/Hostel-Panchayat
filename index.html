@@ -46,32 +46,78 @@
       justify-content: center;
       align-items: center;
       background-image:
-        radial-gradient(circle at 15% 15%, rgba(226, 173, 64, 0.12) 0%, transparent 42%),
-        radial-gradient(circle at 85% 85%, rgba(118, 75, 19, 0.18) 0%, transparent 45%),
-        radial-gradient(circle at 50% 50%, rgba(13, 11, 8, 0.88) 0%, #0d0b08 100%);
+        radial-gradient(circle at 15% 15%, rgba(110, 215, 255, 0.16) 0%, transparent 30%),
+        radial-gradient(circle at 75% 18%, rgba(117, 88, 255, 0.15) 0%, transparent 28%),
+        radial-gradient(circle at 50% 60%, rgba(15, 118, 160, 0.12) 0%, transparent 38%),
+        linear-gradient(150deg, #050a13 0%, #0f1926 28%, #0a111d 52%, #050a12 100%);
+      position: relative;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      border-radius: 50%;
+      filter: blur(30px);
+      opacity: 0.55;
+      pointer-events: none;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      width: 48vw;
+      height: 48vw;
+      left: -10vw;
+      top: 8vh;
+      background: radial-gradient(circle, rgba(66, 214, 255, 0.42), rgba(66, 214, 255, 0.06) 38%, transparent 70%);
+    }
+
+    body::after {
+      width: 42vw;
+      height: 42vw;
+      right: -8vw;
+      bottom: -10vh;
+      background: radial-gradient(circle, rgba(78, 204, 172, 0.32), rgba(78, 204, 172, 0.08) 40%, transparent 70%);
+      animation-delay: 2s;
+    }
+
+    @keyframes drift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      100% { transform: translate3d(18px, -18px, 0) scale(1.08); }
     }
 
     .app-container {
       width: 100%;
       max-width: 520px;
       height: 94vh;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(18, 24, 35, 0.82), rgba(8, 13, 22, 0.92));
+      border: 1px solid rgba(127, 210, 255, 0.22);
       border-radius: 28px;
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
-      box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.85), 0 0 1px 1px rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(26px);
+      -webkit-backdrop-filter: blur(26px);
+      box-shadow: 0 32px 80px -20px rgba(0, 0, 0, 0.88), 0 0 0 1px rgba(255,255,255,0.08), inset 0 1px 0 rgba(255,255,255,0.12);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      isolation: isolate;
+    }
+
+    .app-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(130, 220, 255, 0.10), rgba(126, 90, 255, 0.08), rgba(110, 211, 163, 0.08));
+      z-index: -1;
+      pointer-events: none;
     }
 
     /* Classy Login / Setup Modal */
     .login-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(6, 9, 14, 0.97);
+      background: linear-gradient(180deg, rgba(4, 9, 17, 0.84), rgba(10, 16, 24, 0.96));
       backdrop-filter: blur(24px);
       z-index: 50;
       display: flex;
@@ -80,6 +126,31 @@
       align-items: center;
       padding: 2.25rem;
       transition: opacity 0.4s ease, visibility 0.4s ease;
+      overflow: hidden;
+    }
+
+    .login-overlay::before,
+    .login-overlay::after {
+      content: "";
+      position: absolute;
+      width: 32rem;
+      height: 32rem;
+      border-radius: 50%;
+      filter: blur(55px);
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .login-overlay::before {
+      top: -14rem;
+      left: -8rem;
+      background: radial-gradient(circle, rgba(75, 196, 255, 0.38), rgba(75, 196, 255, 0.08) 42%, transparent 70%);
+    }
+
+    .login-overlay::after {
+      right: -9rem;
+      bottom: -14rem;
+      background: radial-gradient(circle, rgba(76, 239, 209, 0.34), rgba(76, 239, 209, 0.08) 42%, transparent 70%);
     }
 
     .login-overlay.hidden {
@@ -143,7 +214,7 @@
       font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #ffffff 40%, #00f2fe 100%);
+      background: linear-gradient(135deg, #f8ffd5 12%, #d5f6ff 30%, #8af0ff 52%, #f8d98c 78%, #fffaf0 100%);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -151,6 +222,7 @@
       width: min(100%, 560px);
       align-self: center;
       text-align: left;
+      text-shadow: 0 10px 30px rgba(96, 210, 255, 0.2);
     }
 
     .brand-tagline {
@@ -166,7 +238,7 @@
       width: min(100%, 560px);
       max-width: 560px;
       margin: 0 auto 0.7rem;
-      color: #f1d487;
+      color: #e7d0a4;
       font-size: 0.92rem;
       font-weight: 600;
       line-height: 1.55;
@@ -1500,23 +1572,23 @@
         <img class="brand-image-holder" src="./logo.png" alt="Hostel Panchayat logo">
       </div>
       <h1 class="brand-title">Hostel Panchayat</h1>
-      <p class="brand-invite">Apna naam likhiye aur friends ke saath baat karna shuru kijiye.</p>
+      <p class="brand-invite">Your hostel social lounge for instant rooms, live conversations, calls, music, and shared moments with friends.</p>
       <p class="made-by">Made by Raghav</p>
 
       <section class="product-intro" aria-labelledby="freeFeaturesTitle">
-        <h2 id="freeFeaturesTitle">Everything you need for hostel life, free to use</h2>
+        <h2 id="freeFeaturesTitle">A free digital hangout for hostel life</h2>
         <div class="free-feature-grid">
           <article class="free-feature">
-            <strong>Instant group chat</strong>
-            <span>Create or join a room with a simple shareable code.</span>
+            <strong>Private room chats</strong>
+            <span>Jump into a room, share a code, and keep your hostel circle connected instantly.</span>
           </article>
           <article class="free-feature">
-            <strong>Voice and video calls</strong>
-            <span>Talk face to face with friends directly from the room.</span>
+            <strong>Voice & video calls</strong>
+            <span>Talk live with friends directly inside the room using browser-based calling.</span>
           </article>
           <article class="free-feature">
-            <strong>Share more together</strong>
-            <span>Send images, files, music and approximate location when you choose.</span>
+            <strong>Files, photos & music</strong>
+            <span>Send images, files, songs, and quick updates without needing any paid plan.</span>
           </article>
         </div>
       </section>

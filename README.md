@@ -1,21 +1,22 @@
 # Hostel Panchayat
 
-Hostel Panchayat is a free, browser-based social lounge for hostel friends. It helps residents stay connected through quick rooms, live conversations and shared media without requiring an account or paid plan.
+Hostel Panchayat is a free, browser-based social lounge made for hostel residents who want a simpler way to stay connected. It gives friends a shared digital space to create rooms, talk live, play music, share files, and hang out without needing a paid app or complicated setup.
 
-## What you can use for free
+## What this website does
 
-- **Instant group chat:** Create or join a room with a shareable room code.
-- **Voice and video calls:** Talk directly with people in the active room using WebRTC.
-- **Image and file sharing:** Send useful files and photos inside a conversation.
-- **Music sharing:** Search and play songs from the local `songs/` folder.
-- **Room QR codes:** Share a room quickly by scanning a QR code.
-- **Active members:** See who is currently in a room.
-- **Optional location sharing:** Share an approximate area only after granting browser permission.
-- **Responsive experience:** Use the app on phones, tablets and desktop browsers.
+- **Instant group rooms:** Create or join a room with a shareable code and bring your hostel circle together.
+- **Real-time chat:** Send text messages and keep the conversation flowing with friends in the same room.
+- **Voice and video calls:** Start direct webcam and microphone calls from inside the room using WebRTC.
+- **Image and file sharing:** Share photos, documents, and useful updates with the people in your room.
+- **Music in the lounge:** Search and play songs from the local `songs/` folder during the chat.
+- **Quick room access:** Share a room link or QR code for easy invites.
+- **Live member view:** See who is active in the room and stay connected with the right people.
+- **Optional location sharing:** Share an approximate area only after browser permission is granted.
+- **Responsive experience:** Works on phones, tablets, and desktops using a browser.
 
 ## Run locally
 
-Open `index.html` in a modern browser, or serve this folder with any static web server. Camera and microphone features work best on `localhost` or a deployed HTTPS site.
+Open `index.html` in a modern browser, or serve this folder with any static web server. Camera and microphone features work best on `localhost` or an HTTPS site.
 
 ## Project files
 
@@ -30,4 +31,4 @@ Open `index.html` in a modern browser, or serve this folder with any static web 
 - Phone: [9981940670](tel:9981940670)
 - Email: [superhero123634@gmail.com](mailto:superhero123634@gmail.com)
 
-Hostel Panchayat is free to use. Please respect the privacy of everyone in a room and share location only when you are comfortable doing so.
+Hostel Panchayat is free to use. Please respect everyone’s privacy in a room and only share location when you are comfortable doing so.
