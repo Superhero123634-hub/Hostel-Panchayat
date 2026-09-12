@@ -1333,6 +1333,25 @@
     .made-by { color: #64d8ff; }
     .entry-page-link { color: #8bddff; font-size: 0.72rem; font-weight: 700; text-decoration: none; margin: 0 0 1rem; }
     .entry-page-link:hover { text-decoration: underline; }
+    .windows-download-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      width: min(100%, 320px);
+      margin: 0 auto 1rem;
+      padding: 0.72rem 1rem;
+      border: 1px solid rgba(139, 234, 255, 0.38);
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(52, 174, 232, 0.2), rgba(20, 92, 178, 0.5));
+      color: #dffaff;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(18, 115, 219, 0.2), inset 0 1px 0 rgba(255,255,255,0.12);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .windows-download-link:hover { transform: translateY(-2px); border-color: #8beaff; background: linear-gradient(135deg, rgba(52, 190, 244, 0.3), rgba(24, 111, 210, 0.62)); }
     .auth-card { border-color: rgba(91, 184, 255, 0.24); background: rgba(13, 32, 58, 0.58); }
     .classy-input:focus { border-color: #36b6ff; box-shadow: 0 0 16px rgba(0, 164, 255, 0.25); }
     .code-input-meet { color: #74d7ff; }
@@ -1840,6 +1859,10 @@
           Link ya QR code share karo, sab ek hi room mein aa jayenge.
         </p>
       </div>
+
+      <a class="windows-download-link" href="https://drive.usercontent.google.com/download?id=1-NAO10pRFiEKiZGyAg45VTjlwGopWqLx&amp;export=download" target="_blank" rel="noopener noreferrer" download>
+        <span aria-hidden="true">&#8595;</span> Install for Windows
+      </a>
     </div>
 
     <!-- QR Modal -->
