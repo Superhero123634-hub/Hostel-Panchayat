@@ -271,6 +271,20 @@
       align-self: center;
     }
 
+    .made-by-button {
+      border: 0;
+      background: transparent;
+      color: #55d6be;
+      cursor: pointer;
+      font: inherit;
+      text-align: left;
+      text-decoration: underline;
+      text-decoration-color: rgba(85, 214, 190, 0.35);
+      text-underline-offset: 0.2rem;
+    }
+
+    .made-by-button:hover { color: #a4ffe9; }
+
     .brand-badges {
       display: flex;
       gap: 0.5rem;
@@ -325,6 +339,10 @@
       background: linear-gradient(180deg, rgba(18, 31, 48, 0.74), rgba(11, 17, 27, 0.9));
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
       transition: transform 0.2s ease, border-color 0.2s ease;
+      color: inherit;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
     }
 
     .free-feature:hover {
@@ -346,6 +364,48 @@
       font-size: 0.64rem;
       line-height: 1.45;
     }
+
+    .gujarati-dialogue {
+      width: min(100%, 760px);
+      margin: 0 auto 0.85rem;
+      padding: 0.75rem 1rem;
+      border-left: 3px solid #f1d487;
+      color: #fff0b8;
+      background: rgba(241, 212, 135, 0.08);
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .info-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 400;
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+      background: rgba(2, 8, 16, 0.76);
+      backdrop-filter: blur(12px);
+    }
+
+    .info-modal.hidden { display: none; }
+
+    .info-card {
+      width: min(100%, 440px);
+      max-height: min(76vh, 540px);
+      overflow-y: auto;
+      padding: 1.35rem;
+      border: 1px solid rgba(139, 211, 255, 0.28);
+      border-radius: 18px;
+      background: linear-gradient(155deg, rgba(14, 37, 65, 0.98), rgba(7, 18, 34, 0.98));
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+    }
+
+    .info-card h3 { color: #e9f8ff; font-size: 1.12rem; margin-bottom: 0.6rem; }
+    .info-card p { color: #b9cee2; font-size: 0.78rem; line-height: 1.65; }
+    .info-card .modal-close-btn { float: right; }
+    .info-card .info-detail { margin-top: 0.8rem; color: #8bddff; }
 
     .developer-contact {
       width: min(100%, 760px);
@@ -1611,6 +1671,15 @@
       </div>
     </div>
 
+    <div id="infoModal" class="info-modal hidden" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+      <div class="info-card">
+        <button id="btnCloseInfo" class="modal-close-btn" type="button" title="Band karo" aria-label="Band karo">✕</button>
+        <h3 id="infoModalTitle">About</h3>
+        <p id="infoModalText"></p>
+        <p id="infoModalDetail" class="info-detail"></p>
+      </div>
+    </div>
+
     <!-- Login Modal -->
     <div id="loginModal" class="login-overlay">
       <div class="brand-logo-holder" aria-label="Hostel Panchayat logo image holder">
@@ -1622,49 +1691,51 @@
         <span class="brand-badge">Hostel ready</span>
       </div>
       <h1 class="brand-title">Hostel Panchayat</h1>
-      <p class="brand-invite">Your hostel social lounge for instant rooms, live conversations, calls, music, and shared moments with friends.</p>
-      <p class="made-by">Made by Raghav</p>
+      <p class="brand-invite">Hostel life ka apna digital adda: instant rooms, live baatein, calls, music aur doston ke saath shared moments.</p>
+      <button id="btnAboutRaghav" class="made-by made-by-button" type="button">Developed by Raghav · Mere baare mein</button>
+
+      <p class="gujarati-dialogue">“Locha, lafda aur jalebi fafda — Gujarati ki life se koi nikal hi nahi sakta!”</p>
 
       <section class="product-intro" aria-labelledby="freeFeaturesTitle">
-        <h2 id="freeFeaturesTitle">A free digital hangout for hostel life</h2>
+        <h2 id="freeFeaturesTitle">Hostel life ka free digital hangout</h2>
         <div class="free-feature-grid">
-          <article class="free-feature">
+          <button class="free-feature" type="button" data-info="rooms">
             <strong>Private room chats</strong>
-            <span>Jump into a room, share a code, and keep your hostel circle connected instantly.</span>
-          </article>
-          <article class="free-feature">
+            <span>Room banao, code share karo aur apni hostel gang ko ek jagah jodo.</span>
+          </button>
+          <button class="free-feature" type="button" data-info="calls">
             <strong>Voice & video calls</strong>
-            <span>Talk live with friends directly inside the room using browser-based calling.</span>
-          </article>
-          <article class="free-feature">
+            <span>Room ke andar browser se doston ko live call karo, bina extra app ke.</span>
+          </button>
+          <button class="free-feature" type="button" data-info="media">
             <strong>Files, photos & music</strong>
-            <span>Send images, files, songs, and quick updates without needing any paid plan.</span>
-          </article>
+            <span>Photos, files, songs aur updates share karo, koi paid plan nahi chahiye.</span>
+          </button>
         </div>
       </section>
 
       <div class="developer-contact" aria-label="Developer contact details">
-        <span><strong>Developed by Raghav</strong></span>
+        <span><strong>Raghav se connect karo</strong></span>
         <a href="tel:9981940670">9981940670</a>
         <a href="mailto:superhero123634@gmail.com">superhero123634@gmail.com</a>
       </div>
 
       <div class="auth-card">
         <div>
-          <label class="input-label" for="roomNameInput">Room name</label>
-          <input type="text" id="roomNameInput" class="classy-input" placeholder="e.g. hostel-friends" maxlength="48" required>
+          <label class="input-label" for="roomNameInput">Room ka naam ya code</label>
+          <input type="text" id="roomNameInput" class="classy-input" placeholder="jaise hostel-friends" maxlength="48" required>
         </div>
         <div>
-          <label class="input-label" for="usernameInput">Aapka Naam bataein</label>
-          <input type="text" id="usernameInput" class="classy-input" placeholder="Your name" maxlength="24" required>
+          <label class="input-label" for="usernameInput">Aapka naam batao</label>
+          <input type="text" id="usernameInput" class="classy-input" placeholder="Apna naam" maxlength="24" required>
         </div>
 
         <button id="btnEnterLounge" class="btn-classy-primary">
-          <span>➤</span> Enter chat
+          <span>➤</span> Room mein aao
         </button>
 
         <p class="smart-notice">
-          Share the room link with your friends so they can join the same chat.
+          Link ya QR code share karo, sab ek hi room mein aa jayenge.
         </p>
       </div>
     </div>
@@ -1869,6 +1940,12 @@
     const btnShareLocation = document.getElementById('btnShareLocation');
     const locationStatus = document.getElementById('locationStatus');
     const peerDisplayName = document.getElementById('peerDisplayName');
+    const infoModal = document.getElementById('infoModal');
+    const infoModalTitle = document.getElementById('infoModalTitle');
+    const infoModalText = document.getElementById('infoModalText');
+    const infoModalDetail = document.getElementById('infoModalDetail');
+    const btnCloseInfo = document.getElementById('btnCloseInfo');
+    const btnAboutRaghav = document.getElementById('btnAboutRaghav');
 
     function safeName(value) {
       return String(value || '').trim() || fallbackName;
@@ -2012,13 +2089,10 @@
       });
     }
 
+    const githubSongsApiUrl = 'https://api.github.com/repos/superhero123634-hub/Hostel-Panchayat/contents/songs';
+
     function getGitHubSongsApiUrl() {
-      const suffix = '.github.io';
-      if (!window.location.hostname.endsWith(suffix)) return '';
-      const owner = window.location.hostname.slice(0, -suffix.length);
-      const pathParts = window.location.pathname.split('/').filter(Boolean);
-      const repository = pathParts[0] || `${owner}${suffix}`;
-      return `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repository)}/contents/songs`;
+      return githubSongsApiUrl;
     }
 
     function mapSongFiles(files) {
@@ -2138,7 +2212,7 @@
         button.addEventListener('click', () => {
           window.location.hash = `room=${encodeURIComponent(button.dataset.room)}`;
           recentDrawer.classList.remove('open');
-          notify(`Ready to reopen ${button.dataset.room}. Enter your name to join.`);
+          notify(`${button.dataset.room} room dobara kholne ke liye naam enter karo.`);
           usernameInput.focus();
         });
       });
@@ -2171,6 +2245,50 @@
       const location = memberLocations.get(name);
       return `<div class="active-user"><div class="active-user-info">${escapeHtml(name)}${location ? `<span class="active-user-location">${escapeHtml(location)}</span>` : ''}</div></div>`;
     }
+
+    const infoContent = {
+      rooms: {
+        title: 'Private room chats',
+        text: 'Room ka naam likho aur Room mein aao dabao. Room code ya QR link apni gang ko bhejo, phir sab isi private chat mein mil sakte hain.',
+        detail: 'Room history isi device par save hoti hai; link share karna aapke control mein hai.'
+      },
+      calls: {
+        title: 'Voice & video calls',
+        text: 'Friend connect hote hi phone aur camera buttons active ho jaate hain. Browser permission allow karo aur room ke andar seedha baat karo.',
+        detail: 'Best experience ke liye HTTPS ya localhost use karo.'
+      },
+      media: {
+        title: 'Files, photos & music',
+        text: 'Chat ke neeche camera, media aur file buttons se cheezein share karo. Music button GitHub ke songs folder se latest list laata hai.',
+        detail: 'Naye songs upload karne ke baad Refresh songs dabao.'
+      },
+      about: {
+        title: 'Raghav ke baare mein',
+        text: 'Main Raghav hoon. Hostel Panchayat ko hostel life ki asli vibe ke liye banaya hai: thodi baatein, thoda music, aur doston ke saath ek simple digital adda.',
+        detail: 'Phone: 9981940670 · Email: superhero123634@gmail.com'
+      }
+    };
+
+    function openInfoModal(key) {
+      const content = infoContent[key];
+      if (!content) return;
+      infoModalTitle.textContent = content.title;
+      infoModalText.textContent = content.text;
+      infoModalDetail.textContent = content.detail;
+      infoModal.classList.remove('hidden');
+    }
+
+    btnAboutRaghav.addEventListener('click', () => openInfoModal('about'));
+    document.querySelectorAll('[data-info]').forEach((button) => {
+      button.addEventListener('click', () => openInfoModal(button.dataset.info));
+    });
+    btnCloseInfo.addEventListener('click', () => infoModal.classList.add('hidden'));
+    infoModal.addEventListener('click', (event) => {
+      if (event.target === infoModal) infoModal.classList.add('hidden');
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') infoModal.classList.add('hidden');
+    });
 
     function restoreRecentMessages() {
       const room = recentRooms.find((item) => item.name === currentRoomName);
@@ -2386,7 +2504,7 @@
         peerOnlineStatus.textContent = 'Connection error: ' + err.type;
         peerOnlineStatus.classList.add('offline');
         onlineBadge.classList.add('offline');
-        notify('Could not create garage: ' + err.type);
+        notify('Room create nahi ho paaya: ' + err.type);
       });
     }
 
