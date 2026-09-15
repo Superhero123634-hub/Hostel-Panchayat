@@ -8,6 +8,12 @@ Visit the website here:
 
 - https://superhero123634-hub.github.io/Hostel-Panchayat
 
+## Android App
+
+Download the latest Android APK from the GitHub Release:
+
+- [Download the latest Android APK](https://github.com/Superhero123634-hub/Hostel-Panchayat/releases/latest/download/Hostel-Panchayat-debug.apk)
+
 ## What this website does
 
 - **Instant hostel rooms:** Create or join a room with a shareable code and stay connected with your circle.
