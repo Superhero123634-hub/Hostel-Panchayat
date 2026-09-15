@@ -1728,6 +1728,16 @@
     </div>
   </div>
 
+  <script>
+    (() => {
+      const splash = document.getElementById('loadingSplash');
+      if (!splash) return;
+      const hideSplash = () => splash.classList.add('hidden');
+      window.addEventListener('load', () => window.setTimeout(hideSplash, 2600), { once: true });
+      window.setTimeout(hideSplash, 8000);
+    })();
+  </script>
+
   <!-- Audio Element for WebRTC remote sound delivery -->
   <audio id="remoteAudioStream" autoplay playsinline></audio>
   <button id="audioHelp" class="audio-help" type="button">Tap to enable call audio</button>
