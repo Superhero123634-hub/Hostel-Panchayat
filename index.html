@@ -1333,7 +1333,8 @@
     .made-by { color: #64d8ff; }
     .entry-page-link { color: #8bddff; font-size: 0.72rem; font-weight: 700; text-decoration: none; margin: 0 0 1rem; }
     .entry-page-link:hover { text-decoration: underline; }
-    .windows-download-link {
+    .windows-download-link,
+    .android-download-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -1351,7 +1352,8 @@
       box-shadow: 0 8px 22px rgba(18, 115, 219, 0.2), inset 0 1px 0 rgba(255,255,255,0.12);
       transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
     }
-    .windows-download-link:hover { transform: translateY(-2px); border-color: #8beaff; background: linear-gradient(135deg, rgba(52, 190, 244, 0.3), rgba(24, 111, 210, 0.62)); }
+    .windows-download-link:hover,
+    .android-download-link:hover { transform: translateY(-2px); border-color: #8beaff; background: linear-gradient(135deg, rgba(52, 190, 244, 0.3), rgba(24, 111, 210, 0.62)); }
     .auth-card { border-color: rgba(91, 184, 255, 0.24); background: rgba(13, 32, 58, 0.58); }
     .classy-input:focus { border-color: #36b6ff; box-shadow: 0 0 16px rgba(0, 164, 255, 0.25); }
     .code-input-meet { color: #74d7ff; }
@@ -1629,6 +1631,35 @@
 
     .home-brand:hover { color: #fff; text-decoration: underline; }
 
+    .github-link {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 350;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      min-height: 38px;
+      padding: 0.55rem 0.85rem;
+      border: 1px solid rgba(139, 234, 255, 0.32);
+      border-radius: 999px;
+      background: rgba(8, 25, 48, 0.86);
+      color: #dffaff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+      backdrop-filter: blur(14px);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .github-link:hover {
+      transform: translateY(-2px);
+      border-color: #8beaff;
+      background: rgba(20, 92, 178, 0.82);
+    }
+
     .audio-help {
       position: fixed;
       inset: auto 1rem 1rem auto;
@@ -1862,6 +1893,9 @@
 
       <a class="windows-download-link" href="https://drive.usercontent.google.com/download?id=1-NAO10pRFiEKiZGyAg45VTjlwGopWqLx&amp;export=download" target="_blank" rel="noopener noreferrer" download>
         <span aria-hidden="true">&#8595;</span> Install for Windows
+      </a>
+      <a class="android-download-link" href="https://drive.google.com/file/d/12MtYzXBNWyF6cNVBEWpBwOdrTLZw1Kun/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+        <span aria-hidden="true">&#8595;</span> Install for Android
       </a>
     </div>
 
