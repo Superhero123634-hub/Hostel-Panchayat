@@ -1660,6 +1660,37 @@
       background: rgba(20, 92, 178, 0.82);
     }
 
+    .github-like-button {
+      position: fixed;
+      right: 1rem;
+      bottom: 1rem;
+      z-index: 350;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      min-height: 40px;
+      padding: 0.6rem 0.9rem;
+      border: 1px solid rgba(255, 126, 162, 0.46);
+      border-radius: 999px;
+      background: rgba(44, 17, 40, 0.9);
+      color: #ffe9f0;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+      backdrop-filter: blur(14px);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .github-like-button:hover {
+      transform: translateY(-2px);
+      border-color: #ff91b2;
+      background: rgba(116, 30, 73, 0.92);
+    }
+
+    .github-like-heart { color: #ff729d; font-size: 1rem; line-height: 1; }
+    .github-like-count { color: #fff; }
+
     .audio-help {
       position: fixed;
       inset: auto 1rem 1rem auto;
@@ -1778,6 +1809,59 @@
       .app-header { padding-left: 1.35rem; padding-right: 1.35rem; }
     }
 
+    /* Explicit mode overrides must come after responsive defaults. */
+    html[data-layout-mode="mobile"] body {
+      align-items: stretch !important;
+      overflow: hidden !important;
+    }
+
+    html[data-layout-mode="mobile"] .app-container {
+      width: 100% !important;
+      max-width: none !important;
+      height: 100dvh !important;
+      min-height: 100dvh !important;
+      border-radius: 0 !important;
+    }
+
+    html[data-layout-mode="mobile"] .recent-drawer {
+      position: absolute !important;
+      inset: 0 auto 0 0 !important;
+      transform: translateX(-102%) !important;
+    }
+
+    html[data-layout-mode="mobile"] .recent-drawer.open { transform: translateX(0) !important; }
+    html[data-layout-mode="mobile"] .drawer-back-btn { display: block !important; }
+    html[data-layout-mode="mobile"] .mobile-drawer-btn { display: flex !important; }
+    html[data-layout-mode="mobile"] .header-credit { display: none !important; }
+    html[data-layout-mode="mobile"] .app-header { padding: 0.75rem 0.8rem !important; }
+    html[data-layout-mode="mobile"] .header-actions { gap: 0.2rem !important; }
+    html[data-layout-mode="mobile"] .header-icon-btn { width: 33px !important; height: 33px !important; font-size: 0.88rem !important; }
+    html[data-layout-mode="mobile"] .chat-body { padding: 1rem 0.8rem !important; }
+    html[data-layout-mode="mobile"] .input-section { padding: 0.7rem 0.75rem calc(0.9rem + env(safe-area-inset-bottom)) !important; gap: 0.3rem !important; }
+
+    html[data-layout-mode="pc"] body {
+      align-items: center !important;
+      overflow: hidden !important;
+    }
+
+    html[data-layout-mode="pc"] .app-container {
+      width: 100% !important;
+      max-width: 1180px !important;
+      height: min(900px, 94vh) !important;
+      min-height: 0 !important;
+      border-radius: 24px !important;
+    }
+
+    html[data-layout-mode="pc"] .recent-drawer {
+      position: static !important;
+      display: block !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    html[data-layout-mode="pc"] .drawer-back-btn,
+    html[data-layout-mode="pc"] .mobile-drawer-btn { display: none !important; }
+
     .loading-splash {
       position: fixed;
       inset: 0;
@@ -1829,6 +1913,11 @@
 <body>
 
   <button id="layoutModeToggle" class="layout-mode-toggle" type="button" aria-pressed="false">Use PC layout</button>
+  <a id="githubLikeButton" class="github-like-button" href="https://github.com/Superhero123634-hub/Hostel-Panchayat" target="_blank" rel="noopener noreferrer" aria-label="Like Hostel Panchayat on GitHub">
+    <span class="github-like-heart" aria-hidden="true">♥</span>
+    <span>Like on GitHub</span>
+    <span id="githubLikeCount" class="github-like-count" aria-label="GitHub star count">...</span>
+  </a>
   <div id="loadingSplash" class="loading-splash" role="status" aria-live="polite" aria-label="Loading Hostel Panchayat">
     <div class="splash-content">
       <img class="splash-logo" src="./logo.png" alt="Hostel Panchayat logo">
@@ -1859,6 +1948,18 @@
         localStorage.setItem('hosteller_layout_mode', nextMode);
         applyLayoutMode(nextMode);
       });
+
+      const likeCount = document.getElementById('githubLikeCount');
+      fetch('https://api.github.com/repos/Superhero123634-hub/Hostel-Panchayat', {
+        headers: { Accept: 'application/vnd.github+json' }
+      })
+        .then((response) => response.ok ? response.json() : Promise.reject(new Error('GitHub count unavailable')))
+        .then((repository) => {
+          if (likeCount) likeCount.textContent = String(repository.stargazers_count ?? 0);
+        })
+        .catch(() => {
+          if (likeCount) likeCount.textContent = '';
+        });
     })();
 
     (() => {
