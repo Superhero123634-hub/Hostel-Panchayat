@@ -1862,6 +1862,77 @@
     html[data-layout-mode="pc"] .drawer-back-btn,
     html[data-layout-mode="pc"] .mobile-drawer-btn { display: none !important; }
 
+    .theme-mode-select {
+      position: fixed;
+      top: 1rem;
+      left: 10rem;
+      z-index: 350;
+      min-height: 38px;
+      padding: 0.55rem 2rem 0.55rem 0.8rem;
+      border: 1px solid rgba(139, 234, 255, 0.32);
+      border-radius: 999px;
+      background: rgba(8, 25, 48, 0.86);
+      color: #dffaff;
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+    }
+
+    html[data-platform="mobile"] .theme-mode-select { display: none; }
+
+    html[data-theme="light"] {
+      --bg-base: #eef5fb;
+      --bg-surface: rgba(255, 255, 255, 0.94);
+      --border-subtle: rgba(29, 86, 132, 0.18);
+      --text-main: #17324d;
+      --text-muted: #60758a;
+      --bubble-out: linear-gradient(135deg, #2f9eea, #1767c3);
+      --bubble-in: #ffffff;
+      scrollbar-color: #5aaee2 #e8f1f8;
+    }
+
+    html[data-theme="light"] body {
+      background-color: var(--bg-base) !important;
+      color: var(--text-main) !important;
+      background-image: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(226,241,250,0.96)), radial-gradient(circle at 82% 8%, rgba(76, 180, 235, 0.22), transparent 35%), radial-gradient(circle at 10% 92%, rgba(255, 207, 126, 0.18), transparent 38%) !important;
+    }
+
+    html[data-theme="light"] body::before { background: radial-gradient(circle, rgba(76, 181, 235, 0.22), rgba(76, 181, 235, 0.04) 38%, transparent 70%); }
+    html[data-theme="light"] body::after { background: radial-gradient(circle, rgba(255, 184, 95, 0.18), rgba(255, 184, 95, 0.03) 40%, transparent 70%); }
+    html[data-theme="light"] .app-container { background: rgba(255, 255, 255, 0.78) !important; border-color: rgba(44, 119, 169, 0.22); box-shadow: 0 24px 70px rgba(43, 87, 119, 0.2), 0 0 0 1px rgba(255,255,255,0.8), inset 0 1px 0 rgba(255,255,255,0.95); }
+    html[data-theme="light"] .app-container::before { background: linear-gradient(135deg, rgba(117, 211, 255, 0.16), rgba(255, 255, 255, 0.12), rgba(255, 210, 139, 0.12)); }
+    html[data-theme="light"] .login-overlay { background: linear-gradient(135deg, rgba(247, 252, 255, 0.96), rgba(232, 244, 251, 0.98)); }
+    html[data-theme="light"] .app-header { background: rgba(255,255,255,0.84); border-bottom-color: rgba(44, 119, 169, 0.18); }
+    html[data-theme="light"] .recent-drawer { background: rgba(244, 250, 254, 0.9); border-right-color: rgba(44, 119, 169, 0.18); }
+    html[data-theme="light"] .chat-bg-tint { background: linear-gradient(180deg, rgba(239, 249, 255, 0.22), rgba(231, 242, 249, 0.7)); }
+    html[data-theme="light"] .chat-body { color: var(--text-main); }
+    html[data-theme="light"] .input-section { background: rgba(255,255,255,0.88); border-top-color: rgba(44, 119, 169, 0.18); }
+    html[data-theme="light"] .classy-input,
+    html[data-theme="light"] .msg-field,
+    html[data-theme="light"] .music-url { background: rgba(255,255,255,0.92); color: #17324d; border-color: rgba(44, 119, 169, 0.24); }
+    html[data-theme="light"] .classy-input::placeholder,
+    html[data-theme="light"] .msg-field::placeholder { color: #7890a4; }
+    html[data-theme="light"] .incoming .bubble { color: #24425e; border-color: rgba(44, 119, 169, 0.12); box-shadow: 0 5px 16px rgba(58, 108, 139, 0.1); }
+    html[data-theme="light"] .bubble-meta { color: #6e8497; }
+    html[data-theme="light"] .recent-room:hover,
+    html[data-theme="light"] .recent-room.active { background: rgba(55, 157, 219, 0.12); border-color: rgba(44, 119, 169, 0.2); }
+    html[data-theme="light"] .header-icon-btn,
+    html[data-theme="light"] .layout-mode-toggle,
+    html[data-theme="light"] .theme-mode-select { background: rgba(255,255,255,0.88); color: #214866; border-color: rgba(44, 119, 169, 0.26); }
+    html[data-theme="light"] .peer-details h2,
+    html[data-theme="light"] .drawer-heading h3,
+    html[data-theme="light"] .chat-placeholder p { color: #17324d !important; }
+    html[data-theme="light"] .perm-modal,
+    html[data-theme="light"] .members-card,
+    html[data-theme="light"] .info-card,
+    html[data-theme="light"] .qr-modal { background: rgba(255,255,255,0.98); color: #17324d; border-color: rgba(44, 119, 169, 0.22); box-shadow: 0 24px 70px rgba(43, 87, 119, 0.24); }
+    html[data-theme="light"] .perm-desc,
+    html[data-theme="light"] .location-note,
+    html[data-theme="light"] .info-detail { color: #60758a; }
+    html[data-theme="light"] .github-like-button { background: rgba(255, 245, 249, 0.94); color: #72324c; border-color: rgba(214, 91, 126, 0.35); }
+
     .loading-splash {
       position: fixed;
       inset: 0;
@@ -1913,6 +1984,10 @@
 <body>
 
   <button id="layoutModeToggle" class="layout-mode-toggle" type="button" aria-pressed="false">Use PC layout</button>
+  <select id="themeModeSelect" class="theme-mode-select" aria-label="Choose color theme">
+    <option value="dark">Dark</option>
+    <option value="light">Light</option>
+  </select>
   <a id="githubLikeButton" class="github-like-button" href="https://github.com/Superhero123634-hub/Hostel-Panchayat" target="_blank" rel="noopener noreferrer" aria-label="Like Hostel Panchayat on GitHub">
     <span class="github-like-heart" aria-hidden="true">♥</span>
     <span>Like on GitHub</span>
@@ -1930,8 +2005,10 @@
     (() => {
       const root = document.documentElement;
       const toggle = document.getElementById('layoutModeToggle');
+      const themeSelect = document.getElementById('themeModeSelect');
       const isMobileOnly = root.dataset.platform === 'mobile';
       const savedMode = localStorage.getItem('hosteller_layout_mode');
+      const savedTheme = localStorage.getItem('hosteller_theme') || 'dark';
       const initialMode = isMobileOnly ? 'mobile' : (savedMode || (window.matchMedia('(max-width: 760px)').matches ? 'mobile' : 'pc'));
 
       const applyLayoutMode = (mode) => {
@@ -1947,6 +2024,18 @@
         const nextMode = root.dataset.layoutMode === 'mobile' ? 'pc' : 'mobile';
         localStorage.setItem('hosteller_layout_mode', nextMode);
         applyLayoutMode(nextMode);
+      });
+
+      const applyTheme = (theme) => {
+        const activeTheme = theme === 'light' ? 'light' : 'dark';
+        root.dataset.theme = activeTheme;
+        if (themeSelect) themeSelect.value = activeTheme;
+      };
+
+      applyTheme(savedTheme);
+      themeSelect?.addEventListener('change', () => {
+        localStorage.setItem('hosteller_theme', themeSelect.value);
+        applyTheme(themeSelect.value);
       });
 
       const likeCount = document.getElementById('githubLikeCount');
