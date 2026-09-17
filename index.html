@@ -1460,7 +1460,7 @@
       border-right: 1px solid var(--border-subtle);
       background: rgba(8, 13, 22, 0.72);
       overflow-y: auto;
-      scrollbar-gutter: stable;
+      scrollbar-gutter: auto;
     }
 
     .drawer-heading {
@@ -1674,6 +1674,64 @@
       font-weight: 700;
     }
 
+    .layout-mode-toggle {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 350;
+      min-height: 38px;
+      padding: 0.55rem 0.85rem;
+      border: 1px solid rgba(139, 234, 255, 0.32);
+      border-radius: 999px;
+      background: rgba(8, 25, 48, 0.86);
+      color: #dffaff;
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.12);
+      backdrop-filter: blur(14px);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .layout-mode-toggle:hover {
+      transform: translateY(-2px);
+      border-color: #8beaff;
+      background: rgba(20, 92, 178, 0.82);
+    }
+
+    html[data-platform="mobile"] .layout-mode-toggle { display: none; }
+
+    html[data-layout-mode="mobile"] body { align-items: stretch; overflow-x: hidden; }
+    html[data-layout-mode="mobile"] .app-container { width: 100%; height: 100dvh; min-height: 100dvh; border-radius: 0; }
+    html[data-layout-mode="mobile"] .recent-drawer {
+      position: absolute;
+      inset: 0 auto 0 0;
+      z-index: 25;
+      transform: translateX(-102%);
+      transition: transform 0.25s ease;
+      box-shadow: 18px 0 40px rgba(0,0,0,0.38);
+    }
+    html[data-layout-mode="mobile"] .recent-drawer.open { transform: translateX(0); }
+    html[data-layout-mode="mobile"] .drawer-back-btn,
+    html[data-layout-mode="mobile"] .mobile-drawer-btn { display: flex; }
+    html[data-layout-mode="mobile"] .app-header { padding: 0.75rem 0.8rem; }
+    html[data-layout-mode="mobile"] .header-actions { gap: 0.2rem; }
+    html[data-layout-mode="mobile"] .header-credit { display: none; }
+    html[data-layout-mode="mobile"] .header-icon-btn { width: 33px; height: 33px; font-size: 0.88rem; }
+    html[data-layout-mode="mobile"] .peer-details h2 { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    html[data-layout-mode="mobile"] .chat-body { padding: 1rem 0.8rem; }
+    html[data-layout-mode="mobile"] .input-section { padding: 0.7rem 0.75rem calc(0.9rem + env(safe-area-inset-bottom)); gap: 0.3rem; }
+    html[data-layout-mode="mobile"] .tool-btn { padding: 0.35rem; font-size: 1.05rem; }
+    html[data-layout-mode="mobile"] .msg-field { min-width: 0; padding-left: 0.85rem; padding-right: 0.85rem; }
+    html[data-layout-mode="mobile"] .btn-send { flex: 0 0 40px; }
+
+    html[data-layout-mode="pc"] body { align-items: center; overflow: hidden; }
+    html[data-layout-mode="pc"] .app-container { width: 100%; max-width: 1180px; height: min(900px, 94vh); border-radius: 24px; }
+    html[data-layout-mode="pc"] .recent-drawer { position: static; display: block; transform: none; box-shadow: none; }
+    html[data-layout-mode="pc"] .drawer-back-btn,
+    html[data-layout-mode="pc"] .mobile-drawer-btn { display: none; }
+
     @media (max-width: 760px) {
       body { align-items: stretch; overflow-x: hidden; }
       .app-container { width: 100%; height: 100dvh; min-height: 100dvh; border-radius: 0; }
@@ -1770,6 +1828,7 @@
 </head>
 <body>
 
+  <button id="layoutModeToggle" class="layout-mode-toggle" type="button" aria-pressed="false">Use PC layout</button>
   <div id="loadingSplash" class="loading-splash" role="status" aria-live="polite" aria-label="Loading Hostel Panchayat">
     <div class="splash-content">
       <img class="splash-logo" src="./logo.png" alt="Hostel Panchayat logo">
@@ -1779,6 +1838,29 @@
   </div>
 
   <script>
+    (() => {
+      const root = document.documentElement;
+      const toggle = document.getElementById('layoutModeToggle');
+      const isMobileOnly = root.dataset.platform === 'mobile';
+      const savedMode = localStorage.getItem('hosteller_layout_mode');
+      const initialMode = isMobileOnly ? 'mobile' : (savedMode || (window.matchMedia('(max-width: 760px)').matches ? 'mobile' : 'pc'));
+
+      const applyLayoutMode = (mode) => {
+        const activeMode = isMobileOnly ? 'mobile' : mode;
+        root.dataset.layoutMode = activeMode;
+        if (!toggle) return;
+        toggle.textContent = activeMode === 'mobile' ? 'Use PC layout' : 'Use Mobile layout';
+        toggle.setAttribute('aria-pressed', String(activeMode === 'mobile'));
+      };
+
+      applyLayoutMode(initialMode);
+      toggle?.addEventListener('click', () => {
+        const nextMode = root.dataset.layoutMode === 'mobile' ? 'pc' : 'mobile';
+        localStorage.setItem('hosteller_layout_mode', nextMode);
+        applyLayoutMode(nextMode);
+      });
+    })();
+
     (() => {
       const splash = document.getElementById('loadingSplash');
       if (!splash) return;
